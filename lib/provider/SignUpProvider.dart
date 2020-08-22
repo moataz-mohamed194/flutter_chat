@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_chat_ui_starter/Widget/buttonWidget.dart';
 import 'package:flutter_chat_ui_starter/Widget/lineWordWeight.dart';
+import 'package:flutter_chat_ui_starter/models/ValidationItem.dart';
 import 'package:flutter_chat_ui_starter/screens/Choose_Image.dart';
 import 'package:flutter_chat_ui_starter/screens/Login_screen.dart';
 import 'package:flutter_chat_ui_starter/screens/SignUp_screen.dart';
@@ -40,94 +41,94 @@ class GetNoConnectionWidget extends StatelessWidget {
     );
   }
 }
-
-class ValidationItem {
-  final String value;
-  final String error;
-  String name;
-  String email;
-  String password;
-  ValidationItem(this.value, this.error);
-}
+//
+//class ValidationItem {
+//  final String value;
+//  final String error;
+//  String name;
+//  String email;
+//  String password;
+//  ValidationItem(this.value, this.error);
+//}
 
 class SignUpProvider extends ChangeNotifier {
-  ValidationItem _name = new ValidationItem(null, null);
-  ValidationItem _password = new ValidationItem(null, null);
-  ValidationItem _password2 = new ValidationItem(null, null);
-  ValidationItem _phoneNumber = new ValidationItem(null, null);
+//  ValidationItem _name = new ValidationItem(null, null);
+//  ValidationItem _password = new ValidationItem(null, null);
+//  ValidationItem _password2 = new ValidationItem(null, null);
+//  ValidationItem _phoneNumber = new ValidationItem(null, null);
   ValidationItem _code = new ValidationItem(null, null);
 
   File imageFile;
-  ValidationItem get name => _name;
-  ValidationItem get phoneNumber => _phoneNumber;
-  ValidationItem get password => _password;
-  ValidationItem get password2 => _password2;
+//  ValidationItem get name => _name;
+//  ValidationItem get phoneNumber => _phoneNumber;
+//  ValidationItem get password => _password;
+//  ValidationItem get password2 => _password2;
   ValidationItem get code => _code;
-  bool get isValid {
-    if (_name.value != null &&
-        _phoneNumber.value != null &&
-        _password.value != null &&
-        _password2.value != null) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-
-  void changeName(String value) {
-    if (value.length >= 3 && value.contains(RegExp('([0-9])')) == false) {
-      _name = ValidationItem(value, null);
-    } else {
-      _name = ValidationItem(null, "must be longer and don't have numbers");
-    }
-    notifyListeners();
-  }
-
-  void changePhoneNumber(String value) {
-    bool phoneNumberValid = RegExp("([0-9])").hasMatch(value);
-    if (phoneNumberValid == true && value.length == 13) {
-      _phoneNumber = ValidationItem(value, null);
-    } else {
-      _phoneNumber = ValidationItem(null, "Enter valid phone number");
-    }
-    notifyListeners();
-  }
-
-  bool passwordValid0;
-  bool passwordValid1;
-  bool passwordValid2;
-  bool passwordValid3;
-  void changePassword(String value) {
-    passwordValid0 = RegExp(r"[a-z]").hasMatch(value);
-    passwordValid1 = RegExp(r"[A-Z]").hasMatch(value);
-    passwordValid2 = RegExp(r"[0-9]").hasMatch(value);
-    passwordValid3 = RegExp(r"[.!#$%&'*+-/=?^_`{|}~]").hasMatch(value);
-
-    if (passwordValid0 == true &&
-        passwordValid1 == true &&
-        passwordValid2 == true &&
-        passwordValid3 == true &&
-        value.length >= 6) {
-      _password = ValidationItem(value, null);
-      ValidationItem(value, null).password = value;
-    } else {
-      _password =
-          ValidationItem(null, "the password must be more than 6 digits");
-    }
-    notifyListeners();
-  }
-
-  void changePassword2(String value) {
-    //print(_password.value);
-    // print("sssssssssssssssssssssssssssss");
-    if (_password.value == value) {
-      //print(value);
-      _password2 = ValidationItem(value, null);
-    } else {
-      _password2 = ValidationItem(null, "the passwords are not same");
-    }
-    notifyListeners();
-  }
+//  bool get isValid {
+//    if (_name.value != null &&
+//        _phoneNumber.value != null &&
+//        _password.value != null &&
+//        _password2.value != null) {
+//      return true;
+//    } else {
+//      return false;
+//    }
+//  }
+//
+//  void changeName(String value) {
+//    if (value.length >= 3 && value.contains(RegExp('([0-9])')) == false) {
+//      _name = ValidationItem(value, null);
+//    } else {
+//      _name = ValidationItem(null, "must be longer and don't have numbers");
+//    }
+//    notifyListeners();
+//  }
+//
+//  void changePhoneNumber(String value) {
+//    bool phoneNumberValid = RegExp("([0-9])").hasMatch(value);
+//    if (phoneNumberValid == true && value.length == 13) {
+//      _phoneNumber = ValidationItem(value, null);
+//    } else {
+//      _phoneNumber = ValidationItem(null, "Enter valid phone number");
+//    }
+//    notifyListeners();
+//  }
+//
+//  bool passwordValid0;
+//  bool passwordValid1;
+//  bool passwordValid2;
+//  bool passwordValid3;
+//  void changePassword(String value) {
+//    passwordValid0 = RegExp(r"[a-z]").hasMatch(value);
+//    passwordValid1 = RegExp(r"[A-Z]").hasMatch(value);
+//    passwordValid2 = RegExp(r"[0-9]").hasMatch(value);
+//    passwordValid3 = RegExp(r"[.!#$%&'*+-/=?^_`{|}~]").hasMatch(value);
+//
+//    if (passwordValid0 == true &&
+//        passwordValid1 == true &&
+//        passwordValid2 == true &&
+//        passwordValid3 == true &&
+//        value.length >= 6) {
+//      _password = ValidationItem(value, null);
+//      ValidationItem(value, null).password = value;
+//    } else {
+//      _password =
+//          ValidationItem(null, "the password must be more than 6 digits");
+//    }
+//    notifyListeners();
+//  }
+//
+//  void changePassword2(String value) {
+//    //print(_password.value);
+//    // print("sssssssssssssssssssssssssssss");
+//    if (_password.value == value) {
+//      //print(value);
+//      _password2 = ValidationItem(value, null);
+//    } else {
+//      _password2 = ValidationItem(null, "the passwords are not same");
+//    }
+//    notifyListeners();
+//  }
 
   alert(BuildContext context) {
     showDialog(
@@ -204,13 +205,14 @@ class SignUpProvider extends ChangeNotifier {
         });
   }
 
-  signUpNext(BuildContext context) {
-    if (_name.value == null ||
-        _phoneNumber.value == null ||
-        _password.value == null ||
-        _password2.value == null) {
+  signUpNext(BuildContext context, var nameD, var phoneNumberD, var passwordD,
+      var password2D) {
+    if (nameD == null ||
+        phoneNumberD == null ||
+        passwordD == null ||
+        password2D == null) {
     } else {
-      signUpUser(_phoneNumber.value, context);
+      signUpUser(nameD, phoneNumberD, passwordD, password2D, context);
 
       /* Navigator.push(context, MaterialPageRoute(builder: (context) {
         return AuthenticationPhoneNumber(
@@ -239,7 +241,8 @@ class SignUpProvider extends ChangeNotifier {
   final _codeController = TextEditingController();
 
   String _error, _convertPhoneToEmail;
-  Future<bool> signUpUser(String phone, BuildContext context) async {
+  Future<bool> signUpUser(String name, String phone, String password,
+      String password2, BuildContext context) async {
     FirebaseAuth _auth = FirebaseAuth.instance;
     print("hhhh");
     var count = 70;
@@ -252,13 +255,6 @@ class SignUpProvider extends ChangeNotifier {
       }
     }
 
-    print("xxxxxxxxxxxxxxxxxxxxxxxxxxxx");
-    print(imageFile.path);
-    print("zzzzzzzzzzzzzzzzzzzz");
-
-    print(imageFile.toString());
-    print("xxxxxxxxxxxxxxxxxxxxxxxxx");
-
     _auth.verifyPhoneNumber(
         phoneNumber: phone,
         timeout: Duration(seconds: 20),
@@ -268,19 +264,16 @@ class SignUpProvider extends ChangeNotifier {
           AuthResult result = await _auth.signInWithCredential(credential);
 
           FirebaseUser user = result.user;
-          _convertPhoneToEmail = '${_phoneNumber.value}@gmail.com';
+          _convertPhoneToEmail = '$phone@gmail.com';
           if (user != null) {
-            //print(imageFile.readAsStringSync());
             await FirebaseAuth.instance
                 .createUserWithEmailAndPassword(
-                    email: _convertPhoneToEmail, password: _password.value)
+                    email: _convertPhoneToEmail, password: password)
                 .whenComplete(() async {
               //     print("added");
-              final StorageReference storageReference = FirebaseStorage()
-                  .ref()
-                  .child('Profiles')
-                  .child('${_phoneNumber.value}.jpg');
-              var data = 'Profiles/${_phoneNumber.value}.jpg';
+              final StorageReference storageReference =
+                  FirebaseStorage().ref().child('Profiles').child('$phone.jpg');
+              var data = 'Profiles/$phone.jpg';
               final StorageUploadTask uploadTask =
                   storageReference.putData(imageFile.readAsBytesSync());
 
@@ -297,11 +290,11 @@ class SignUpProvider extends ChangeNotifier {
                 FirebaseDatabase.instance
                     .reference()
                     .child('Account')
-                    .child(_phoneNumber.value)
+                    .child(phone)
                     .set({
-                  'PhoneNumber': _phoneNumber.value,
-                  'Name': _name.value,
-                  'Password': _password.value,
+                  'PhoneNumber': phone,
+                  'Name': name,
+                  'Password': password,
                   'image': imageString
                 }).whenComplete(() async {
                   Navigator.of(context).pushNamedAndRemoveUntil(
@@ -430,26 +423,26 @@ class SignUpProvider extends ChangeNotifier {
                               }
                             },
                           ),
-                          TextButtonWeight(
-                            onTap: () {
-                              if (count > 0) {
-                                print("the code will send after 70 second");
-                                Toast.show("the code will send after 70 second",
-                                    context,
-                                    duration: Toast.LENGTH_SHORT,
-                                    gravity: Toast.BOTTOM);
-                              } else {
-                                Toast.show("the code sent again", context,
-                                    duration: Toast.LENGTH_SHORT,
-                                    gravity: Toast.BOTTOM);
-                                print("the code sent again ");
-                              }
-                            },
-                            buttonText: 'Send activate code again',
-                            buttonSize: 15,
-                            textStyleColor: Color(0xffff3e3e),
-                            weightButton: FontWeight.bold,
-                          ),
+//                          TextButtonWeight(
+//                            onTap: () {
+//                              if (count > 0) {
+//                                print("the code will send after 70 second");
+//                                Toast.show("the code will send after 70 second",
+//                                    context,
+//                                    duration: Toast.LENGTH_SHORT,
+//                                    gravity: Toast.BOTTOM);
+//                              } else {
+//                                Toast.show("the code sent again", context,
+//                                    duration: Toast.LENGTH_SHORT,
+//                                    gravity: Toast.BOTTOM);
+//                                print("the code sent again ");
+//                              }
+//                            },
+//                            buttonText: 'Send activate code again',
+//                            buttonSize: 15,
+//                            textStyleColor: Color(0xffff3e3e),
+//                            weightButton: FontWeight.bold,
+//                          ),
                           Container(
                             width: MediaQuery.of(context).size.width / 1.25,
                             child: ButtonWidget(
@@ -469,26 +462,22 @@ class SignUpProvider extends ChangeNotifier {
                                       .signInWithCredential(credential);
 
                                   FirebaseUser user = result.user;
-                                  _convertPhoneToEmail =
-                                      '${_phoneNumber.value}@gmail.com';
+                                  _convertPhoneToEmail = '$phone@gmail.com';
 
                                   //print("dddddddddddddddddddddddddddddddd");
                                   if (user != null) {
                                     await FirebaseAuth.instance
                                         .createUserWithEmailAndPassword(
-                                            email:
-                                                '${_phoneNumber.value}@gmail.com',
-                                            password: _password.value)
+                                            email: '$phone@gmail.com',
+                                            password: password)
                                         .whenComplete(() async {
                                       //     print("added");
                                       final StorageReference storageReference =
                                           FirebaseStorage()
                                               .ref()
                                               .child('Profiles')
-                                              .child(
-                                                  '${_phoneNumber.value}.jpg');
-                                      var data =
-                                          'Profiles/${_phoneNumber.value}.jpg';
+                                              .child('$phone.jpg');
+                                      var data = 'Profiles/$phone.jpg';
                                       final StorageUploadTask uploadTask =
                                           storageReference.putData(
                                               imageFile.readAsBytesSync());
@@ -510,11 +499,11 @@ class SignUpProvider extends ChangeNotifier {
                                         FirebaseDatabase.instance
                                             .reference()
                                             .child('Account')
-                                            .child(_phoneNumber.value)
+                                            .child(phone)
                                             .set({
-                                          'PhoneNumber': _phoneNumber.value,
-                                          'Name': _name.value,
-                                          'Password': _password.value,
+                                          'PhoneNumber': phone,
+                                          'Name': name,
+                                          'Password': password,
                                           'image': imageString
                                         }).whenComplete(() async {
                                           Navigator.of(context)

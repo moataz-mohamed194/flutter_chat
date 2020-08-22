@@ -4,6 +4,7 @@ import 'package:flutter_chat_ui_starter/Widget/buttonWidget.dart';
 import 'package:flutter_chat_ui_starter/Widget/lineWordWeight.dart';
 import 'package:flutter_chat_ui_starter/Widget/textfield.dart';
 import 'package:flutter_chat_ui_starter/provider/LoginProvider.dart';
+import 'package:flutter_chat_ui_starter/provider/TextFieldProvider.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
@@ -13,7 +14,8 @@ import 'SignUp_screen.dart';
 class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final validationService = Provider.of<LoginProvider>(context);
+    final validationService = Provider.of<TextFieldProvider>(context);
+    final addService = Provider.of<LoginProvider>(context);
     return Scaffold(
       backgroundColor: Color(0xff303c50),
       body: SingleChildScrollView(
@@ -120,11 +122,12 @@ class LoginScreen extends StatelessWidget {
                           borderColor: Theme.of(context).primaryColor,
                           textColor: Theme.of(context).accentColor,
                           onPressed: () async {
-                            (!validationService.isValid)
-                                ? validationService.alert(context)
-                                : Provider.of<LoginProvider>(context,
-                                        listen: false)
-                                    .loginNext(context);
+                            (!validationService.signInIsValid)
+                                ? addService.alert(context)
+                                : addService.loginNext(
+                                    context,
+                                    validationService.phoneNumberData.value,
+                                    validationService.passwordData.value);
                           }),
                     ),
                   ],

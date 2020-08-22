@@ -5,21 +5,14 @@ import 'package:flutter_chat_ui_starter/Widget/FloatingButton.dart';
 import 'package:flutter_chat_ui_starter/Widget/RecentChats.dart';
 import 'package:flutter_chat_ui_starter/provider/HomeProvider.dart';
 import 'package:provider/provider.dart';
-
 import 'Contacts.dart';
+import 'Favorite.dart';
 
-class HomeScreen extends StatefulWidget {
-  @override
-  State<StatefulWidget> createState() {
-    // TODO: implement createState
-    return HomeScreen0();
-  }
-}
-
-class HomeScreen0 extends State<HomeScreen> {
+class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var data = Provider.of<HomeProvider>(context, listen: false);
+    var data = Provider.of<HomeProvider>(context, listen: true);
+
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColor,
       appBar: AppBar(
@@ -40,22 +33,16 @@ class HomeScreen0 extends State<HomeScreen> {
           ),
         ],
       ),
-      body: Container(
-        child: Column(
-          children: <Widget>[
-            CategorySelector(),
-            Text("${data.index}"),
-            Expanded(
-              flex: 1,
-              child: Container(
-                child: Stack(
-                  children: <Widget>[data.widgets[data.index]],
-                ),
-              ),
-            ),
-          ],
-        ),
+      body: Column(
+        children: <Widget>[
+          CategorySelector(),
+          Expanded(
+            flex: 1,
+            child: data.widgets[data.index],
+          ),
+        ],
       ),
+//      ),
       floatingActionButton: FloatingButton(),
     );
   }

@@ -11,6 +11,7 @@ class textFileLogin extends StatelessWidget {
   final Color textStyleColor;
   final Color borderSideColor;
   final bool obscure;
+  final String oldData;
   const textFileLogin(
       {this.textStream,
       this.textChange,
@@ -21,7 +22,8 @@ class textFileLogin extends StatelessWidget {
       this.inputType,
       this.cursorColor,
       this.textIcon,
-      this.obscure = false});
+      this.obscure = false,
+      this.oldData});
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -30,34 +32,34 @@ class textFileLogin extends StatelessWidget {
       child: StreamBuilder(
           stream: textStream,
           builder: (context, snapshot) {
-            return TextField(
-              style: TextStyle(color: textStyleColor),
-              cursorColor: cursorColor,
-              autofocus: false,
-              keyboardType: inputType,
-              obscureText: obscure,
-              onChanged: textChange,
-              decoration: InputDecoration(
-                prefixIcon: textIcon,
-                border: new OutlineInputBorder(
-                  borderRadius: const BorderRadius.all(
-                    const Radius.circular(40.0),
+            return TextFormField(
+                style: TextStyle(color: textStyleColor),
+                cursorColor: cursorColor,
+                autofocus: false,
+                keyboardType: inputType,
+                obscureText: obscure,
+                onChanged: textChange,
+                decoration: InputDecoration(
+                  prefixIcon: textIcon,
+                  border: new OutlineInputBorder(
+                    borderRadius: const BorderRadius.all(
+                      const Radius.circular(40.0),
+                    ),
                   ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(40.0)),
+                    borderSide: BorderSide(color: borderSideColor, width: 2),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(40.0)),
+                    borderSide: BorderSide(color: borderSideColor, width: 2),
+                  ),
+                  hintText: "   $hintText",
+                  helperStyle: TextStyle(
+                      color: textStyleColor, fontWeight: FontWeight.bold),
+                  errorText: errorText,
                 ),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(40.0)),
-                  borderSide: BorderSide(color: borderSideColor, width: 2),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(40.0)),
-                  borderSide: BorderSide(color: borderSideColor, width: 2),
-                ),
-                hintText: "   $hintText",
-                helperStyle: TextStyle(
-                    color: textStyleColor, fontWeight: FontWeight.bold),
-                errorText: errorText,
-              ),
-            );
+                initialValue: oldData);
           }),
     );
   }

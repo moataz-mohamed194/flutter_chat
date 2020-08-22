@@ -9,29 +9,9 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert' as JSON;
 import 'SignUpProvider.dart';
+import 'TextFieldProvider.dart';
 
 class LoginProvider extends ChangeNotifier {
-  ValidationItem _phoneNumber = new ValidationItem(null, null);
-  ValidationItem _password = new ValidationItem(null, null);
-  ValidationItem get phoneNumber => _phoneNumber;
-  ValidationItem get password => _password;
-  bool get isValid {
-    if (_phoneNumber.value != null && _password.value != null) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-
-  void changePhoneNumber(String value) {
-    if (value.length == 13 && value.contains(RegExp('([0-9])')) == true) {
-      _phoneNumber = ValidationItem(value, null);
-    } else {
-      _phoneNumber = ValidationItem(null, "Enter valid phone number");
-    }
-    notifyListeners();
-  }
-
   alert(BuildContext context) {
     showDialog(
         context: context,
@@ -132,33 +112,18 @@ class LoginProvider extends ChangeNotifier {
     }
   }
 
-  void changePassword(String value) {
-    bool passwordValid0 = RegExp(r"[a-z]").hasMatch(value);
-    bool passwordValid1 = RegExp(r"[A-Z]").hasMatch(value);
-    bool passwordValid2 = RegExp(r"[0-9]").hasMatch(value);
-    bool passwordValid3 = RegExp(r"[.!#$%&'*+-/=?^_`{|}~]").hasMatch(value);
-    if (passwordValid0 == true &&
-        passwordValid1 == true &&
-        passwordValid2 == true &&
-        passwordValid3 == true &&
-        value.length >= 6) {
-      _password = ValidationItem(value, null);
-      ValidationItem(value, null).password = value;
-    } else {
-      _password =
-          ValidationItem(null, "Enter valid password and must be more than 6");
-    }
-    notifyListeners();
-  }
-
   String _error;
-  loginNext(BuildContext context) async {
-    if (_phoneNumber.value == null || _password.value == null) {
+
+  loginNext(BuildContext context, var phoneNumberD, var passwordD) async {
+    if (phoneNumberD == null || passwordD == null) {
+      print(TextFieldProvider().phoneNumberData.value);
+      print(TextFieldProvider().passwordData.value);
+      alert(context);
     } else {
-      String convertPhoneToEmail = '${_phoneNumber.value}@gmail.com';
+      String convertPhoneToEmail = '$phoneNumberD@gmail.com';
       await FirebaseAuth.instance
           .signInWithEmailAndPassword(
-              email: convertPhoneToEmail, password: _password.value)
+              email: convertPhoneToEmail, password: passwordD)
           .whenComplete(() {
         //prefs.setString('login', 'yes');
       }).catchError((e) {
@@ -168,7 +133,7 @@ class LoginProvider extends ChangeNotifier {
         var _firebaseRef = FirebaseDatabase()
             .reference()
             .child('Account')
-            .child('${_phoneNumber.value}')
+            .child('$phoneNumberD')
             .once()
             .then((DataSnapshot snapshot) async {
           final value = snapshot.value as Map;
@@ -197,8 +162,8 @@ class LoginProvider extends ChangeNotifier {
         }
       });
 
-      print(_phoneNumber.value);
-      print(_password.value.toString());
+      print(phoneNumberD);
+      print(passwordD);
       notifyListeners();
     }
   }

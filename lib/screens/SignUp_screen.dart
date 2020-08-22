@@ -7,6 +7,7 @@ import 'package:flutter_chat_ui_starter/Widget/buttonWidget.dart';
 import 'package:flutter_chat_ui_starter/Widget/lineWordWeight.dart';
 import 'package:flutter_chat_ui_starter/Widget/textfield.dart';
 import 'package:flutter_chat_ui_starter/provider/SignUpProvider.dart';
+import 'package:flutter_chat_ui_starter/provider/TextFieldProvider.dart';
 import 'package:flutter_chat_ui_starter/screens/Authentication_Phone_Number.dart';
 import 'package:flutter_chat_ui_starter/screens/Login_screen.dart';
 import 'package:flutter_chat_ui_starter/screens/home.dart';
@@ -85,7 +86,8 @@ class SignUp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final validationService = Provider.of<SignUpProvider>(context);
+    final addService = Provider.of<SignUpProvider>(context);
+    final validationService = Provider.of<TextFieldProvider>(context);
     return SafeArea(
         child: Scaffold(
             key: scaffoldState,
@@ -144,15 +146,13 @@ class SignUp extends StatelessWidget {
                                                 height: 120,
                                                 width: 120,
                                               ) */
-                                                validationService.imageFile ==
-                                                        null
+                                                addService.imageFile == null
                                                     ? Container(
                                                         height: 0,
                                                         width: 0,
                                                       )
                                                     : Image.file(
-                                                        validationService
-                                                            .imageFile,
+                                                        addService.imageFile,
                                                         height: 120,
                                                         width: 120,
                                                       ),
@@ -169,8 +169,7 @@ class SignUp extends StatelessWidget {
                                               color: Colors.black,
                                             ),
                                             onPressed: () {
-                                              validationService
-                                                  .onChoseImage(context);
+                                              addService.onChoseImage(context);
                                             }),
                                       ),
                                     ],
@@ -307,9 +306,14 @@ class SignUp extends StatelessWidget {
                             'Name': '_name.value',
                             'Password': '_password.value'
                           });*/
-                          (!validationService.isValid)
-                              ? validationService.alert(context)
-                              : validationService.signUpNext(context);
+                          (!validationService.signUpIsValid)
+                              ? addService.alert(context)
+                              : addService.signUpNext(
+                                  context,
+                                  validationService.nameData.value,
+                                  validationService.phoneNumberData.value,
+                                  validationService.passwordData.value,
+                                  validationService.password2Data.value);
                         }),
                   ),
                   SizedBox(

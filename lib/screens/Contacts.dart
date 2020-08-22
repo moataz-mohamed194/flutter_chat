@@ -1,9 +1,7 @@
 import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:permission_handler/permission_handler.dart';
-import 'package:flutter/material.dart';
-import 'package:contacts_service/contacts_service.dart';
+import 'package:flutter_chat_ui_starter/models/message_model.dart';
 import 'package:flutter/services.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -16,77 +14,75 @@ class Contact0 extends StatefulWidget {
 }
 
 class _Contact0 extends State<Contact0> {
-  Iterable<Contact> contacts = [];
+  List<Contact> contacts = [];
+  List<Contact> contactsFiltered = [];
+  Map<String, Color> contactsColorMap = new Map();
+
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    getAll();
+    getPermissions();
   }
 
-  getAll() async {
-    PermissionStatus permissionStatus = await _getContactPermission();
-    if (permissionStatus == PermissionStatus.granted) {
-      var _contacts = await ContactsService.getContacts();
-      setState(() {
-        contacts = _contacts;
-        //Contact numbers = _contacts as Contact;
-      });
-      print(_contacts);
-      print("fffffffffffffffffffffffffff");
-      print(_contacts.toList());
-      print("dddddddddddddddddddddddddddd");
-      print(contacts.length);
-    } else {
-      print(permissionStatus);
+  getPermissions() async {
+    if (await Permission.contacts.request().isGranted) {
+      getAllContacts();
     }
   }
 
-  Future<PermissionStatus> _getContactPermission() async {
-    PermissionStatus permission = await PermissionHandler()
-        .checkPermissionStatus(PermissionGroup.contacts);
-    if (permission != PermissionStatus.granted &&
-        permission != PermissionStatus.disabled) {
-      Map<PermissionGroup, PermissionStatus> permissionStatus =
-          await PermissionHandler()
-              .requestPermissions([PermissionGroup.contacts]);
-      return permissionStatus[PermissionGroup.contacts] ??
-          PermissionStatus.unknown;
-    } else {
-      return permission;
-    }
+  String flattenPhoneNumber(String phoneStr) {
+    return phoneStr.replaceAllMapped(RegExp(r'^(\+)|\D'), (Match m) {
+      return m[0] == "+" ? "+" : "";
+    });
+  }
+
+  getAllContacts() async {
+    List colors = [Colors.green, Colors.indigo, Colors.yellow, Colors.orange];
+    int colorIndex = 0;
+    List<Contact> _contacts =
+        (await ContactsService.getContacts(withThumbnails: false)).toList();
+    _contacts.forEach((contact) {
+      Color baseColor = colors[colorIndex];
+      contactsColorMap[contact.displayName] = baseColor;
+      colorIndex++;
+      if (colorIndex == colors.length) {
+        colorIndex = 0;
+      }
+    });
+    setState(() {
+      contacts = _contacts;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
-    return SafeArea(
-      child: Scaffold(
-        body: Container(
-            child: Column(
-          children: <Widget>[
-            Text("gggggggggg"),
-            Text("${contacts.length}"),
-            ListView.builder(
-                shrinkWrap: true,
-                itemCount: contacts.length,
-                itemBuilder: (context, index) {
-                  //List<Contact> numbers = contacts.toList();
-                  Contact contact = contacts?.elementAt(index);
-                  //[index];
-                  return ListTile(
-                    contentPadding:
-                        const EdgeInsets.symmetric(vertical: 2, horizontal: 18),
+    return Container(
+      decoration: BoxDecoration(
+        color: Theme.of(context).accentColor,
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(30.0),
+          topRight: Radius.circular(30.0),
+        ),
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(30.0),
+          topRight: Radius.circular(30.0),
+        ),
+        child: ListView.builder(
+          shrinkWrap: true,
+          itemCount: contacts.length,
+          itemBuilder: (context, index) {
+            Contact contact = contacts[index];
 
-                    title: Text(contact.displayName ?? ''),
-                    subtitle:
-                        Text('${contact.phones.elementAt(0).value}' ?? ''),
-                    //This can be further expanded to showing contacts detail
-                    // onPressed().
-                  );
-                })
-          ],
-        )),
+            return ListTile(
+              title: Text(contact.displayName),
+              subtitle: Text(contact.phones.length > 0
+                  ? contact.phones.elementAt(0).value
+                  : ''),
+            );
+          },
+        ),
       ),
     );
   }

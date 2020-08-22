@@ -6,6 +6,7 @@ import 'package:flutter_chat_ui_starter/Widget/CircularButton.dart';
 import 'package:flutter_chat_ui_starter/Widget/RecentChats.dart';
 import 'package:flutter_chat_ui_starter/models/message_model.dart';
 import 'package:flutter_chat_ui_starter/provider/HomeProvider.dart';
+import 'package:flutter_chat_ui_starter/screens/settings.dart';
 import 'package:provider/provider.dart';
 
 class FloatingButton extends StatefulWidget {
@@ -82,6 +83,9 @@ class _FloatingButton extends State<FloatingButton>
                 backgroundColor: Theme.of(context).primaryColor,
                 onPressed: () {
                   print("vvvvvvvvvvvvv");
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    return Settings();
+                  }));
                 },
                 child: Icon(
                   Icons.settings,

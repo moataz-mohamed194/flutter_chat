@@ -6,6 +6,7 @@ import 'package:flutter_chat_ui_starter/Widget/buttonWidget.dart';
 import 'package:flutter_chat_ui_starter/Widget/lineWordWeight.dart';
 import 'package:flutter_chat_ui_starter/Widget/textfield.dart';
 import 'package:flutter_chat_ui_starter/provider/SignUpProvider.dart';
+import 'package:flutter_chat_ui_starter/provider/TextFieldProvider.dart';
 import 'package:provider/provider.dart';
 
 var count = 70;
@@ -34,7 +35,7 @@ class AuthenticationPhoneNumber extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final validationService = Provider.of<SignUpProvider>(context);
+    final validationService = Provider.of<TextFieldProvider>(context);
 
     return Scaffold(
         key: scaffoldState,

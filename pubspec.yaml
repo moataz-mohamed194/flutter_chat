@@ -38,8 +38,9 @@ dependencies:
   cloud_firestore: any
   firebase_storage: any
   shared_preferences: ^0.5.8
-  permission_handler: ^3.0.2
-  contacts_service: ^0.2.6
+  contacts_service: ^0.3.10
+  permission_handler: ^5.0.1+1
+
 
 
 dev_dependencies:
