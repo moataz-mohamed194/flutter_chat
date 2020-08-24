@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_ui_starter/provider/TextFieldProvider.dart';
+import 'package:flutter_chat_ui_starter/provider/oldDataProvider.dart';
 import 'provider/HomeProvider.dart';
 import 'provider/LoginProvider.dart';
 import 'provider/SignUpProvider.dart';
@@ -28,17 +29,15 @@ Future main() async {
           ChangeNotifierProvider(
             create: (context) => TextFieldProvider(),
           ),
-//          ChangeNotifierProxyProvider<TextFieldProvider, LoginProvider>(
-//            create: (ctx) => LoginProvider(),
-//            update: (_, auth, data) =>
-//                data..update(auth.phoneNumberData, auth.passwordData),
-//          )
+          ChangeNotifierProvider(
+            create: (context) => OldDataProvider(),
+          ),
         ],
         child: Provider<LoginProvider>(
             create: (_) => LoginProvider(),
             child: MaterialApp(
               debugShowCheckedModeBanner: false,
-              title: 'Flutter Demo',
+              title: 'Chat',
               theme: ThemeData(
                   primaryColor: Color(0xffff3e3e),
                   accentColor: Color(0xFFFEF9EB),
@@ -64,12 +63,15 @@ Future main() async {
           ChangeNotifierProvider(
             create: (context) => TextFieldProvider(),
           ),
+          ChangeNotifierProvider(
+            create: (context) => OldDataProvider(),
+          ),
         ],
         child: Provider<LoginProvider>(
             create: (_) => LoginProvider(),
             child: MaterialApp(
               debugShowCheckedModeBanner: false,
-              title: 'Flutter Demo',
+              title: 'Chat',
               theme: ThemeData(
                   primaryColor: Color(0xffff3e3e),
                   accentColor: Color(0xFFFEF9EB),

@@ -140,22 +140,16 @@ class SignUp extends StatelessWidget {
                                           child: ClipRRect(
                                             borderRadius: BorderRadius.all(
                                                 Radius.circular(120)),
-                                            child:
-                                                /* Image.network(
-                                                'gs://whatsapp-523f6.appspot.com/Profiles/+201289555089',
-                                                height: 120,
-                                                width: 120,
-                                              ) */
-                                                addService.imageFile == null
-                                                    ? Container(
-                                                        height: 0,
-                                                        width: 0,
-                                                      )
-                                                    : Image.file(
-                                                        addService.imageFile,
-                                                        height: 120,
-                                                        width: 120,
-                                                      ),
+                                            child: addService.imageFile == null
+                                                ? Container(
+                                                    height: 0,
+                                                    width: 0,
+                                                  )
+                                                : Image.file(
+                                                    addService.imageFile,
+                                                    height: 120,
+                                                    width: 120,
+                                                  ),
                                           ),
                                         ),
                                       ),

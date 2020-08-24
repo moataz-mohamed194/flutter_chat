@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_chat_ui_starter/models/ValidationItem.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class TextFieldProvider extends ChangeNotifier {
   ValidationItem nameData = new ValidationItem(null, null);
@@ -12,6 +13,30 @@ class TextFieldProvider extends ChangeNotifier {
   ValidationItem get password => passwordData;
   ValidationItem get password2 => password2Data;
   ValidationItem get code => codeData;
+  ValidationItem currentPassword = new ValidationItem(null, null);
+  ValidationItem get cPassword => currentPassword;
+  bool get boolEdit {
+    if (currentPassword.value != null &&
+        passwordData.value != null &&
+        password2Data.value != null) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  changeCurrentPassword(String value) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String password = prefs.getString('Password');
+    if (password == value) {
+      currentPassword = ValidationItem(value, null);
+    } else {
+      currentPassword =
+          ValidationItem(null, "password not the same your current password");
+    }
+    notifyListeners();
+  }
+
   bool get signUpIsValid {
     if (nameData.value != null &&
         phoneNumberData.value != null &&

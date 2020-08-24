@@ -6,7 +6,8 @@ import 'package:flutter_chat_ui_starter/Widget/CircularButton.dart';
 import 'package:flutter_chat_ui_starter/Widget/RecentChats.dart';
 import 'package:flutter_chat_ui_starter/models/message_model.dart';
 import 'package:flutter_chat_ui_starter/provider/HomeProvider.dart';
-import 'package:flutter_chat_ui_starter/screens/settings.dart';
+import 'package:flutter_chat_ui_starter/provider/oldDataProvider.dart';
+import 'package:flutter_chat_ui_starter/screens/Setting_Screen.dart';
 import 'package:provider/provider.dart';
 
 class FloatingButton extends StatefulWidget {
@@ -66,6 +67,7 @@ class _FloatingButton extends State<FloatingButton>
   @override
   Widget build(BuildContext context) {
     final _homeProvider = Provider.of<HomeProvider>(context);
+    final getOldData = Provider.of<OldDataProvider>(context);
 
     // TODO: implement build
     return Column(
@@ -83,8 +85,10 @@ class _FloatingButton extends State<FloatingButton>
                 backgroundColor: Theme.of(context).primaryColor,
                 onPressed: () {
                   print("vvvvvvvvvvvvv");
+                  getOldData.getData();
+
                   Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return Settings();
+                    return SettingScreen();
                   }));
                 },
                 child: Icon(

@@ -121,24 +121,16 @@ class LoginProvider extends ChangeNotifier {
       alert(context);
     } else {
       String convertPhoneToEmail = '$phoneNumberD@gmail.com';
-      await FirebaseAuth.instance
-          .signInWithEmailAndPassword(
-              email: convertPhoneToEmail, password: passwordD)
-          .whenComplete(() {
-        //prefs.setString('login', 'yes');
-      }).catchError((e) {
-        _error =
-            "PlatformException(ERROR_WRONG_PASSWORD, The password is invalid or the user does not have a password., null)";
-      }).whenComplete(() async {
-        var _firebaseRef = FirebaseDatabase()
+      try {
+        await FirebaseAuth.instance.signInWithEmailAndPassword(
+            email: convertPhoneToEmail, password: passwordD);
+        FirebaseDatabase()
             .reference()
             .child('Account')
             .child('$phoneNumberD')
             .once()
             .then((DataSnapshot snapshot) async {
           final value = snapshot.value as Map;
-          print("vvvvvvvvvvvvvvvvvvvvvv");
-          print("vvvvvvvvvvvvvvvvvvvvvv");
           SharedPreferences prefs = await SharedPreferences.getInstance();
           for (final key in value.keys) {
             print(value);
@@ -154,17 +146,55 @@ class LoginProvider extends ChangeNotifier {
             await prefs.setString('image', '${value['image']}');
           }
         });
-        ;
-        // print(_firebaseRef);
-        {
-          Navigator.of(context).pushNamedAndRemoveUntil(
-              '/HomeScreen', (Route<dynamic> route) => false);
+        print("ddddddddddddddddddddddddddd");
+        Navigator.of(context).pushNamedAndRemoveUntil(
+            '/HomeScreen', (Route<dynamic> route) => false);
+      } catch (e) {
+        print(e);
+        if (e.code == 'user-not-found') {
+          print('No user found for that email.');
+        } else if (e.code == 'wrong-password') {
+          print('Wrong password provided for that user.');
         }
-      });
-
+      }
+//
+//          .whenComplete(() async {
+//        FirebaseDatabase()
+//            .reference()
+//            .child('Account')
+//            .child('$phoneNumberD')
+//            .once()
+//            .then((DataSnapshot snapshot) async {
+//          final value = snapshot.value as Map;
+//          SharedPreferences prefs = await SharedPreferences.getInstance();
+//          for (final key in value.keys) {
+//            print(value);
+//            // department.add(value[key]['Name']);
+//            print('${value['Name']}');
+//            print('${value['Password']}');
+//            print('${value['PhoneNumber']}');
+//            print('${value['image']}');
+//            await prefs.setString('Login', 'Yes');
+//            await prefs.setString('Name', '${value['Name']}');
+//            await prefs.setString('Password', '${value['Password']}');
+//            await prefs.setString('PhoneNumber', '${value['PhoneNumber']}');
+//            await prefs.setString('image', '${value['image']}');
+//          }
+//        });
+//
+////        Navigator.of(context).pushNamedAndRemoveUntil(
+////            '/HomeScreen', (Route<dynamic> route) => false);
+//
+//        // print(_firebaseRef);
+//      }).catchError((e) {
+//        _error =
+//            "PlatformException(ERROR_WRONG_PASSWORD, The password is invalid or the user does not have a password., null)";
+//        print(_error);
+//      });
+/*
       print(phoneNumberD);
-      print(passwordD);
-      notifyListeners();
+      print(passwordD);*/
+      // notifyListeners();
     }
   }
 }
