@@ -73,7 +73,6 @@ class TextFieldProvider extends ChangeNotifier {
       phoneNumberData = ValidationItem(null, "Enter valid phone number");
     }
 
-    //print(phoneNumberData.value);
     notifyListeners();
   }
 
@@ -98,7 +97,6 @@ class TextFieldProvider extends ChangeNotifier {
           ValidationItem(null, "the password must be more than 6 digits");
     }
 
-    // print(passwordData.value);
     notifyListeners();
   }
 

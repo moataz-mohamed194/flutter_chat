@@ -5,10 +5,7 @@ import 'package:flutter_chat_ui_starter/Widget/lineWordWeight.dart';
 import 'package:flutter_chat_ui_starter/Widget/textfield.dart';
 import 'package:flutter_chat_ui_starter/provider/LoginProvider.dart';
 import 'package:flutter_chat_ui_starter/provider/TextFieldProvider.dart';
-import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:provider/provider.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert' as JSON;
 import 'SignUp_screen.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -69,7 +66,7 @@ class LoginScreen extends StatelessWidget {
                     SizedBox(
                       height: 40,
                     ),
-                    textFileLogin(
+                    TextFileLogin(
                       hintText: "Phone Number",
                       errorText: validationService.phoneNumber.error,
                       textIcon: Icon(Icons.phone),
@@ -84,7 +81,7 @@ class LoginScreen extends StatelessWidget {
                     SizedBox(
                       height: 20,
                     ),
-                    textFileLogin(
+                    TextFileLogin(
                       hintText: "Password",
                       errorText: validationService.password.error,
                       textIcon: Icon(Icons.lock),

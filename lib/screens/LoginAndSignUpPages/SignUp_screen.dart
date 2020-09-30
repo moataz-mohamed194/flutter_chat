@@ -1,5 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -8,9 +6,7 @@ import 'package:flutter_chat_ui_starter/Widget/lineWordWeight.dart';
 import 'package:flutter_chat_ui_starter/Widget/textfield.dart';
 import 'package:flutter_chat_ui_starter/provider/SignUpProvider.dart';
 import 'package:flutter_chat_ui_starter/provider/TextFieldProvider.dart';
-import 'package:flutter_chat_ui_starter/screens/Authentication_Phone_Number.dart';
-import 'package:flutter_chat_ui_starter/screens/Login_screen.dart';
-import 'package:flutter_chat_ui_starter/screens/home.dart';
+import 'package:flutter_chat_ui_starter/screens/LoginAndSignUpPages/Login_screen.dart';
 import 'package:provider/provider.dart';
 
 class CustomClipPath extends CustomClipper<Path> {
@@ -75,7 +71,6 @@ class SignUp extends StatelessWidget {
         codeAutoRetrievalTimeout: null);
   }
 */
-  final _codeController = TextEditingController();
 
   GlobalKey<ScaffoldState> scaffoldState = new GlobalKey<ScaffoldState>();
   showSnackBar(String data) {
@@ -174,7 +169,7 @@ class SignUp extends StatelessWidget {
                       ],
                     ),
                   ),
-                  textFileLogin(
+                  TextFileLogin(
                     hintText: "Your name",
                     errorText: validationService.name.error,
                     textIcon: Icon(Icons.person),
@@ -189,7 +184,7 @@ class SignUp extends StatelessWidget {
                   SizedBox(
                     height: 20,
                   ),
-                  textFileLogin(
+                  TextFileLogin(
                     hintText: "Your phone Number",
                     errorText: validationService.phoneNumber.error,
                     textIcon: Icon(Icons.phone),
@@ -204,7 +199,7 @@ class SignUp extends StatelessWidget {
                   SizedBox(
                     height: 20,
                   ),
-                  textFileLogin(
+                  TextFileLogin(
                     hintText: "Your password",
                     errorText: validationService.password.error,
                     textIcon: Icon(Icons.lock),
@@ -220,7 +215,7 @@ class SignUp extends StatelessWidget {
                   SizedBox(
                     height: 20,
                   ),
-                  textFileLogin(
+                  TextFileLogin(
                     hintText: "repeat password",
                     errorText: validationService.password2.error,
                     textIcon: Icon(Icons.repeat),

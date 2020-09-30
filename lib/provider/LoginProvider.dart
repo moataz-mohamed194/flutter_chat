@@ -2,13 +2,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_chat_ui_starter/screens/home.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
-import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert' as JSON;
-import 'SignUpProvider.dart';
 import 'TextFieldProvider.dart';
 
 class LoginProvider extends ChangeNotifier {
@@ -96,7 +93,7 @@ class LoginProvider extends ChangeNotifier {
       case FacebookLoginStatus.loggedIn:
         final token = result.accessToken.token;
         final graphResponse = await http.get(
-            'https://graph.facebook.com/v2.12/me?fields=name,picture,email&access_token=${token}');
+            'https://graph.facebook.com/v2.12/me?fields=name,picture,email&access_token=$token');
         final profile = JSON.jsonDecode(graphResponse.body);
         print(token);
         print(profile);
@@ -111,8 +108,6 @@ class LoginProvider extends ChangeNotifier {
         break;
     }
   }
-
-  String _error;
 
   loginNext(BuildContext context, var phoneNumberD, var passwordD) async {
     if (phoneNumberD == null || passwordD == null) {
@@ -133,8 +128,7 @@ class LoginProvider extends ChangeNotifier {
           final value = snapshot.value as Map;
           SharedPreferences prefs = await SharedPreferences.getInstance();
           for (final key in value.keys) {
-            print(value);
-            // department.add(value[key]['Name']);
+            print(key);
             print('${value['Name']}');
             print('${value['Password']}');
             print('${value['PhoneNumber']}');
@@ -157,44 +151,6 @@ class LoginProvider extends ChangeNotifier {
           print('Wrong password provided for that user.');
         }
       }
-//
-//          .whenComplete(() async {
-//        FirebaseDatabase()
-//            .reference()
-//            .child('Account')
-//            .child('$phoneNumberD')
-//            .once()
-//            .then((DataSnapshot snapshot) async {
-//          final value = snapshot.value as Map;
-//          SharedPreferences prefs = await SharedPreferences.getInstance();
-//          for (final key in value.keys) {
-//            print(value);
-//            // department.add(value[key]['Name']);
-//            print('${value['Name']}');
-//            print('${value['Password']}');
-//            print('${value['PhoneNumber']}');
-//            print('${value['image']}');
-//            await prefs.setString('Login', 'Yes');
-//            await prefs.setString('Name', '${value['Name']}');
-//            await prefs.setString('Password', '${value['Password']}');
-//            await prefs.setString('PhoneNumber', '${value['PhoneNumber']}');
-//            await prefs.setString('image', '${value['image']}');
-//          }
-//        });
-//
-////        Navigator.of(context).pushNamedAndRemoveUntil(
-////            '/HomeScreen', (Route<dynamic> route) => false);
-//
-//        // print(_firebaseRef);
-//      }).catchError((e) {
-//        _error =
-//            "PlatformException(ERROR_WRONG_PASSWORD, The password is invalid or the user does not have a password., null)";
-//        print(_error);
-//      });
-/*
-      print(phoneNumberD);
-      print(passwordD);*/
-      // notifyListeners();
     }
   }
 }

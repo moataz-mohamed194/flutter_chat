@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_chat_ui_starter/models/message_model.dart';
-import 'package:flutter_chat_ui_starter/screens/ChatScreen.dart';
 
 class Favorite extends StatelessWidget {
   @override

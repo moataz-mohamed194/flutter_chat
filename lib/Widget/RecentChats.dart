@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_ui_starter/models/message_model.dart';
-import 'package:flutter_chat_ui_starter/screens/ChatScreen.dart';
+import 'package:flutter_chat_ui_starter/screens/Chat/ChatScreen.dart';
 
 class RecentChats extends StatelessWidget {
   @override
@@ -36,23 +36,16 @@ class RecentChats extends StatelessWidget {
                       ),
                     ),
                   ),
-                  /*=> Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (_) {
-                    /*ChatScreen(
-                      user: chat.sender,
-                    ),*/
-                  }),
-                ),*/
-
                   child: Container(
                     margin: EdgeInsets.only(top: 5.0, bottom: 5.0, right: 20.0),
                     padding:
                         EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
                     decoration: BoxDecoration(
-                      color: chat.unread
+                      color:
+                          /*chat.unread
                           ? Color(0xFFFFEFEE)
-                          : Theme.of(context).accentColor,
+                          : */
+                          Theme.of(context).accentColor,
                       borderRadius: BorderRadius.only(
                         topRight: Radius.circular(20.0),
                         bottomRight: Radius.circular(20.0),
@@ -120,7 +113,8 @@ class RecentChats extends StatelessWidget {
                                     child: Text(
                                       'NEW',
                                       style: TextStyle(
-                                        color: Theme.of(context).accentColor,
+                                        color: Color(
+                                            0xFFFEF9EB), // Theme.of(context).accentColor,
                                         fontSize: 12.0,
                                         fontWeight: FontWeight.bold,
                                       ),

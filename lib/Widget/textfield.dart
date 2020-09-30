@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class textFileLogin extends StatelessWidget {
+class TextFileLogin extends StatelessWidget {
   final Stream textStream;
   final Function textChange;
   final String hintText;
@@ -12,9 +12,11 @@ class textFileLogin extends StatelessWidget {
   final Color borderSideColor;
   final bool obscure;
   final String oldData;
-  const textFileLogin(
+  final TextStyle hintStyle;
+  const TextFileLogin(
       {this.textStream,
       this.textChange,
+      this.hintStyle,
       this.textStyleColor,
       this.hintText,
       this.borderSideColor,
@@ -56,7 +58,10 @@ class textFileLogin extends StatelessWidget {
                   ),
                   hintText: "   $hintText",
                   helperStyle: TextStyle(
-                      color: textStyleColor, fontWeight: FontWeight.bold),
+                    color: textStyleColor,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  hintStyle: hintStyle,
                   errorText: errorText,
                 ),
                 initialValue: oldData);

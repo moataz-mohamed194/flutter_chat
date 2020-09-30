@@ -1,11 +1,9 @@
 import 'dart:async';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_ui_starter/Widget/buttonWidget.dart';
 import 'package:flutter_chat_ui_starter/Widget/lineWordWeight.dart';
 import 'package:flutter_chat_ui_starter/Widget/textfield.dart';
-import 'package:flutter_chat_ui_starter/provider/SignUpProvider.dart';
 import 'package:flutter_chat_ui_starter/provider/TextFieldProvider.dart';
 import 'package:provider/provider.dart';
 
@@ -77,7 +75,7 @@ class AuthenticationPhoneNumber extends StatelessWidget {
                           fontWeight: FontWeight.bold,
                           fontSize: MediaQuery.of(context).size.width / 17),
                     ),
-                    textFileLogin(
+                    TextFileLogin(
                       hintText: "",
                       cursorColor: Theme.of(context).textSelectionColor,
                       borderSideColor: Theme.of(context).primaryColor,

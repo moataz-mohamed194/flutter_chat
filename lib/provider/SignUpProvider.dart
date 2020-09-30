@@ -6,12 +6,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_chat_ui_starter/Widget/buttonWidget.dart';
-import 'package:flutter_chat_ui_starter/Widget/lineWordWeight.dart';
 import 'package:flutter_chat_ui_starter/models/ValidationItem.dart';
-import 'package:flutter_chat_ui_starter/screens/Choose_Image.dart';
-import 'package:flutter_chat_ui_starter/screens/Login_screen.dart';
-import 'package:flutter_chat_ui_starter/screens/SignUp_screen.dart';
-import 'package:flutter_chat_ui_starter/screens/home.dart';
+import 'package:flutter_chat_ui_starter/Widget/Choose_Image.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:async';
@@ -41,94 +37,12 @@ class GetNoConnectionWidget extends StatelessWidget {
     );
   }
 }
-//
-//class ValidationItem {
-//  final String value;
-//  final String error;
-//  String name;
-//  String email;
-//  String password;
-//  ValidationItem(this.value, this.error);
-//}
 
 class SignUpProvider extends ChangeNotifier {
-//  ValidationItem _name = new ValidationItem(null, null);
-//  ValidationItem _password = new ValidationItem(null, null);
-//  ValidationItem _password2 = new ValidationItem(null, null);
-//  ValidationItem _phoneNumber = new ValidationItem(null, null);
   ValidationItem _code = new ValidationItem(null, null);
 
   File imageFile;
-//  ValidationItem get name => _name;
-//  ValidationItem get phoneNumber => _phoneNumber;
-//  ValidationItem get password => _password;
-//  ValidationItem get password2 => _password2;
   ValidationItem get code => _code;
-//  bool get isValid {
-//    if (_name.value != null &&
-//        _phoneNumber.value != null &&
-//        _password.value != null &&
-//        _password2.value != null) {
-//      return true;
-//    } else {
-//      return false;
-//    }
-//  }
-//
-//  void changeName(String value) {
-//    if (value.length >= 3 && value.contains(RegExp('([0-9])')) == false) {
-//      _name = ValidationItem(value, null);
-//    } else {
-//      _name = ValidationItem(null, "must be longer and don't have numbers");
-//    }
-//    notifyListeners();
-//  }
-//
-//  void changePhoneNumber(String value) {
-//    bool phoneNumberValid = RegExp("([0-9])").hasMatch(value);
-//    if (phoneNumberValid == true && value.length == 13) {
-//      _phoneNumber = ValidationItem(value, null);
-//    } else {
-//      _phoneNumber = ValidationItem(null, "Enter valid phone number");
-//    }
-//    notifyListeners();
-//  }
-//
-//  bool passwordValid0;
-//  bool passwordValid1;
-//  bool passwordValid2;
-//  bool passwordValid3;
-//  void changePassword(String value) {
-//    passwordValid0 = RegExp(r"[a-z]").hasMatch(value);
-//    passwordValid1 = RegExp(r"[A-Z]").hasMatch(value);
-//    passwordValid2 = RegExp(r"[0-9]").hasMatch(value);
-//    passwordValid3 = RegExp(r"[.!#$%&'*+-/=?^_`{|}~]").hasMatch(value);
-//
-//    if (passwordValid0 == true &&
-//        passwordValid1 == true &&
-//        passwordValid2 == true &&
-//        passwordValid3 == true &&
-//        value.length >= 6) {
-//      _password = ValidationItem(value, null);
-//      ValidationItem(value, null).password = value;
-//    } else {
-//      _password =
-//          ValidationItem(null, "the password must be more than 6 digits");
-//    }
-//    notifyListeners();
-//  }
-//
-//  void changePassword2(String value) {
-//    //print(_password.value);
-//    // print("sssssssssssssssssssssssssssss");
-//    if (_password.value == value) {
-//      //print(value);
-//      _password2 = ValidationItem(value, null);
-//    } else {
-//      _password2 = ValidationItem(null, "the passwords are not same");
-//    }
-//    notifyListeners();
-//  }
 
   alert(BuildContext context) {
     showDialog(
@@ -213,22 +127,6 @@ class SignUpProvider extends ChangeNotifier {
         password2D == null) {
     } else {
       signUpUser(nameD, phoneNumberD, passwordD, password2D, context);
-
-      /* Navigator.push(context, MaterialPageRoute(builder: (context) {
-        return AuthenticationPhoneNumber(
-          name: _name.value,
-          phoneNumber: _phoneNumber.value,
-          password: _password.value,
-          image: imageFile.toString(),
-        );
-      }));*/
-      //loginUser(_phoneNumber.value,context);
-      //loginUser('+201289555089', context);
-
-      /*print(imageFile);
-      print(_name.value);
-      print(_phoneNumber.value);
-      print(_password.value.toString());*/
       notifyListeners();
     }
   }
@@ -240,8 +138,9 @@ class SignUpProvider extends ChangeNotifier {
 
   final _codeController = TextEditingController();
 
-  String _error, _convertPhoneToEmail;
-  Future<bool> signUpUser(String name, String phone, String password,
+  String _convertPhoneToEmail;
+  String _error;
+  Future<void> signUpUser(String name, String phone, String password,
       String password2, BuildContext context) async {
     FirebaseAuth _auth = FirebaseAuth.instance;
     print("hhhh");
@@ -259,8 +158,6 @@ class SignUpProvider extends ChangeNotifier {
         phoneNumber: phone,
         timeout: Duration(seconds: 20),
         verificationCompleted: (AuthCredential credential) async {
-          //Navigator.of(context).pop();
-
           AuthResult result = await _auth.signInWithCredential(credential);
 
           FirebaseUser user = result.user;
@@ -270,17 +167,16 @@ class SignUpProvider extends ChangeNotifier {
                 .createUserWithEmailAndPassword(
                     email: _convertPhoneToEmail, password: password)
                 .whenComplete(() async {
-              //     print("added");
               final StorageReference storageReference =
                   FirebaseStorage().ref().child('Profiles').child('$phone.jpg');
               var data = 'Profiles/$phone.jpg';
               final StorageUploadTask uploadTask =
                   storageReference.putData(imageFile.readAsBytesSync());
 
-              final StreamSubscription<StorageTaskEvent> streamSubscription =
+              /*final StreamSubscription<StorageTaskEvent> streamSubscription =
                   uploadTask.events.listen((event) {
                 print('EVENT ${event.type}');
-              });
+              });*/
               final ref = FirebaseStorage().ref().child(data);
               var imageString = await ref.getDownloadURL();
               print("sssssssssssssssssssssssssssss");
@@ -307,7 +203,6 @@ class SignUpProvider extends ChangeNotifier {
                 });
               });
             }).catchError((e) {
-              //  print("Erroeee: $e");
               _error =
                   "PlatformException(ERROR_EMAIL_ALREADY_IN_USE, The email address is already in use by another account., null)";
             });
@@ -331,8 +226,6 @@ class SignUpProvider extends ChangeNotifier {
                   elevation: 4,
                   backgroundColor: Theme.of(context).accentColor,
                   child: Container(
-                      //padding: EdgeInsets.all(10),
-                      //width: MediaQuery.of(context).size.width,
                       height: MediaQuery.of(context).size.height / 3,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(20),
@@ -376,7 +269,6 @@ class SignUpProvider extends ChangeNotifier {
                                   changecode(vals);
                                 },
                                 decoration: InputDecoration(
-                                  //prefixIcon: textIcon,
                                   border: new OutlineInputBorder(
                                     borderRadius: const BorderRadius.all(
                                       const Radius.circular(40.0),
@@ -396,7 +288,6 @@ class SignUpProvider extends ChangeNotifier {
                                         color: Theme.of(context).primaryColor,
                                         width: 2),
                                   ),
-//                                hintText: "   $hintText",
                                   helperStyle: TextStyle(
                                       color:
                                           Theme.of(context).textSelectionColor,
@@ -423,26 +314,6 @@ class SignUpProvider extends ChangeNotifier {
                               }
                             },
                           ),
-//                          TextButtonWeight(
-//                            onTap: () {
-//                              if (count > 0) {
-//                                print("the code will send after 70 second");
-//                                Toast.show("the code will send after 70 second",
-//                                    context,
-//                                    duration: Toast.LENGTH_SHORT,
-//                                    gravity: Toast.BOTTOM);
-//                              } else {
-//                                Toast.show("the code sent again", context,
-//                                    duration: Toast.LENGTH_SHORT,
-//                                    gravity: Toast.BOTTOM);
-//                                print("the code sent again ");
-//                              }
-//                            },
-//                            buttonText: 'Send activate code again',
-//                            buttonSize: 15,
-//                            textStyleColor: Color(0xffff3e3e),
-//                            weightButton: FontWeight.bold,
-//                          ),
                           Container(
                             width: MediaQuery.of(context).size.width / 1.25,
                             child: ButtonWidget(
@@ -464,14 +335,12 @@ class SignUpProvider extends ChangeNotifier {
                                   FirebaseUser user = result.user;
                                   _convertPhoneToEmail = '$phone@gmail.com';
 
-                                  //print("dddddddddddddddddddddddddddddddd");
                                   if (user != null) {
                                     await FirebaseAuth.instance
                                         .createUserWithEmailAndPassword(
                                             email: '$phone@gmail.com',
                                             password: password)
                                         .whenComplete(() async {
-                                      //     print("added");
                                       final StorageReference storageReference =
                                           FirebaseStorage()
                                               .ref()
@@ -482,11 +351,11 @@ class SignUpProvider extends ChangeNotifier {
                                           storageReference.putData(
                                               imageFile.readAsBytesSync());
 
-                                      final StreamSubscription<StorageTaskEvent>
+                                      /*final StreamSubscription<StorageTaskEvent>
                                           streamSubscription =
                                           uploadTask.events.listen((event) {
                                         print('EVENT ${event.type}');
-                                      });
+                                      });*/
                                       final ref =
                                           FirebaseStorage().ref().child(data);
                                       var imageString =
@@ -522,7 +391,6 @@ class SignUpProvider extends ChangeNotifier {
                                         });
                                       });
                                     }).catchError((e) {
-                                      //  print("Erroeee: $e");
                                       _error =
                                           "PlatformException(ERROR_EMAIL_ALREADY_IN_USE, The email address is already in use by another account., null)";
                                     });
@@ -542,7 +410,6 @@ class SignUpProvider extends ChangeNotifier {
   Future<void> openGallery(BuildContext context) async {
     var picture = await ImagePicker.pickImage(source: ImageSource.gallery);
     imageFile = picture;
-    // print(imageFile);
     notifyListeners();
   }
 
@@ -557,14 +424,13 @@ class SignUpProvider extends ChangeNotifier {
   Future<void> openCamera(BuildContext context) async {
     var picture = await ImagePicker.pickImage(source: ImageSource.camera);
     imageFile = picture;
-    //print(imageFile.toString());
     notifyListeners();
   }
 
   int counter = 70;
   Timer _timer;
 
-  Page() {
+  page() {
     counter = 70;
     if (_timer != null) {
       _timer.cancel();

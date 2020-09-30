@@ -1,13 +1,10 @@
 import 'package:community_material_icon/community_material_icon.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_chat_ui_starter/Widget/CategorySelector.dart';
-import 'package:flutter_chat_ui_starter/Widget/CircularButton.dart';
-import 'package:flutter_chat_ui_starter/Widget/RecentChats.dart';
-import 'package:flutter_chat_ui_starter/models/message_model.dart';
+import 'package:flutter_chat_ui_starter/provider/AppColorTheme.dart';
 import 'package:flutter_chat_ui_starter/provider/HomeProvider.dart';
 import 'package:flutter_chat_ui_starter/provider/oldDataProvider.dart';
-import 'package:flutter_chat_ui_starter/screens/Setting_Screen.dart';
+import 'package:flutter_chat_ui_starter/screens/FloatButtons/Setting_Screen.dart';
 import 'package:provider/provider.dart';
 
 class FloatingButton extends StatefulWidget {
@@ -79,7 +76,6 @@ class _FloatingButton extends State<FloatingButton>
               transform:
                   Matrix4.rotationZ(unitRadianMethod(rotationAnimation.value))
                     ..scale(degOneTransitionAnimation.value),
-              // alignment: Alignment.center,
               child: FloatingActionButton(
                 heroTag: "a",
                 backgroundColor: Theme.of(context).primaryColor,
@@ -100,21 +96,27 @@ class _FloatingButton extends State<FloatingButton>
         Transform.translate(
             offset: Offset.fromDirection(degTwoTransitionAnimation.value * 100),
             child: Transform(
-                transform:
-                    Matrix4.rotationZ(unitRadianMethod(rotationAnimation.value))
-                      ..scale(degTwoTransitionAnimation.value),
-                //alignment: Alignment.center,
-                child: FloatingActionButton(
-                  heroTag: "s",
-                  backgroundColor: Theme.of(context).primaryColor,
-                  onPressed: () {
-                    print("mmmmmmmmmmmmmmmmm");
-                  },
-                  child: Icon(
-                    CommunityMaterialIcons.moon_waning_crescent,
-                    color: Theme.of(context).textSelectionColor,
-                  ),
-                ))),
+              transform:
+                  Matrix4.rotationZ(unitRadianMethod(rotationAnimation.value))
+                    ..scale(degTwoTransitionAnimation.value),
+              child: Consumer<ThemeNotifier>(
+                  builder: (context, notifier, child) => FloatingActionButton(
+                        heroTag: "s",
+                        backgroundColor: Theme.of(context).primaryColor,
+                        onPressed: () {
+                          notifier.toggleChangeTheme();
+                        },
+                        child: notifier.darkMode == true
+                            ? Icon(
+                                CommunityMaterialIcons.weather_sunny,
+                                color: Theme.of(context).textSelectionColor,
+                              )
+                            : Icon(
+                                CommunityMaterialIcons.moon_waning_crescent,
+                                color: Theme.of(context).textSelectionColor,
+                              ),
+                      )),
+            )),
         Transform.translate(
             offset:
                 Offset.fromDirection(degThreeTransitionAnimation.value * 100),
@@ -122,15 +124,12 @@ class _FloatingButton extends State<FloatingButton>
                 transform:
                     Matrix4.rotationZ(unitRadianMethod(rotationAnimation.value))
                       ..scale(degThreeTransitionAnimation.value),
-                //  alignment: Alignment.center,
                 child: FloatingActionButton(
                   heroTag: "/Login",
                   backgroundColor: Theme.of(context).primaryColor,
                   onPressed: () {
                     print("bbbbbbbbbbbbbb");
                     _homeProvider.logOut(context);
-                    //Navigator.of(context).pushNamedAndRemoveUntil(
-                    //  '/Login', (Route<dynamic> route) => false);
                   },
                   child: Icon(
                     CommunityMaterialIcons.logout,

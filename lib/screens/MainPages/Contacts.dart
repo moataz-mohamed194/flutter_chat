@@ -1,8 +1,6 @@
 import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_chat_ui_starter/models/message_model.dart';
-import 'package:flutter/services.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class Contact0 extends StatefulWidget {
@@ -30,11 +28,11 @@ class _Contact0 extends State<Contact0> {
     }
   }
 
-  String flattenPhoneNumber(String phoneStr) {
-    return phoneStr.replaceAllMapped(RegExp(r'^(\+)|\D'), (Match m) {
-      return m[0] == "+" ? "+" : "";
-    });
-  }
+//  String flattenPhoneNumber(String phoneStr) {
+//    return phoneStr.replaceAllMapped(RegExp(r'^(\+)|\D'), (Match m) {
+//      return m[0] == "+" ? "+" : "";
+//    });
+//  }
 
   getAllContacts() async {
     List colors = [Colors.green, Colors.indigo, Colors.yellow, Colors.orange];
@@ -52,6 +50,17 @@ class _Contact0 extends State<Contact0> {
     setState(() {
       contacts = _contacts;
     });
+
+/*
+  var data = new Map();
+
+    for (int i = 0; i < contacts.length; i++) {
+      Contact contact = contacts[i];
+      data[i]['Name'] = contact.displayName;
+      data[i]['Name'] =
+          contact.phones.length > 0 ? contact.phones.elementAt(0).value : '';
+    }
+    print(data);*/
   }
 
   @override
@@ -75,12 +84,21 @@ class _Contact0 extends State<Contact0> {
           itemBuilder: (context, index) {
             Contact contact = contacts[index];
 
-            return ListTile(
-              title: Text(contact.displayName),
-              subtitle: Text(contact.phones.length > 0
-                  ? contact.phones.elementAt(0).value
-                  : ''),
-            );
+            return contact.phones.length > 0
+                ? ListTile(
+                    title: Text(
+                      contact.displayName == null ? '' : contact.displayName,
+                      style: TextStyle(
+                          color: Theme.of(context).textSelectionColor),
+                    ),
+                    subtitle: Text(
+                        contact.phones.length > 0
+                            ? contact.phones.elementAt(0).value
+                            : '',
+                        style: TextStyle(
+                            color: Theme.of(context).textSelectionColor)),
+                  )
+                : Container();
           },
         ),
       ),

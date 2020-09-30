@@ -87,7 +87,7 @@ class _ChatScreenState extends State<ChatScreen> {*/
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 8.0),
       height: 70.0,
-      color: Theme.of(context).accentColor,
+      color: Theme.of(context).cursorColor,
       child: Row(
         children: <Widget>[
           Expanded(

@@ -1,9 +1,7 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_ui_starter/Widget/buttonWidget.dart';
 import 'package:flutter_chat_ui_starter/Widget/textfield.dart';
-import 'package:flutter_chat_ui_starter/provider/LoginProvider.dart';
 import 'package:flutter_chat_ui_starter/provider/SignUpProvider.dart';
 import 'package:flutter_chat_ui_starter/provider/TextFieldProvider.dart';
 import 'package:flutter_chat_ui_starter/provider/oldDataProvider.dart';
@@ -85,7 +83,7 @@ class SettingScreen extends StatelessWidget {
                                   icon: Icon(
                                     Icons.control_point,
                                     size: 35,
-                                    color: Colors.black,
+                                    color: Theme.of(context).textSelectionColor,
                                   ),
                                   onPressed: () {
                                     addService.onChoseImage(context);
@@ -96,104 +94,167 @@ class SettingScreen extends StatelessWidget {
                     SizedBox(
                       height: 20,
                     ),
-                    textFileLogin(
+                    TextFileLogin(
                         hintText: "Your name",
                         errorText: validationService.name.error,
-                        textIcon: Icon(Icons.person),
-                        cursorColor: Colors.black,
+                        textIcon: Icon(
+                          Icons.person,
+                          color: Theme.of(context).textSelectionColor,
+                        ),
                         borderSideColor: Theme.of(context).primaryColor,
-                        textStyleColor: Colors.black,
+                        textStyleColor: Theme.of(context).textSelectionColor,
+                        cursorColor: Theme.of(context).textSelectionColor,
                         textChange: (vals) {
                           validationService.changeName(vals);
                         },
                         inputType: TextInputType.text,
+                        hintStyle: TextStyle(
+                            color: Theme.of(context).textSelectionColor),
                         oldData: getOldData.name),
                     SizedBox(
                       height: 20,
                     ),
-                    textFileLogin(
+                    TextFileLogin(
                       hintText: "Current password",
                       errorText: validationService.currentPassword.error,
-                      textIcon: Icon(Icons.lock),
-                      cursorColor: Colors.black,
+                      textIcon: Icon(
+                        Icons.lock,
+                        color: Theme.of(context).textSelectionColor,
+                      ),
                       borderSideColor: Theme.of(context).primaryColor,
-                      textStyleColor: Colors.black,
+                      textStyleColor: Theme.of(context).textSelectionColor,
+                      cursorColor: Theme.of(context).textSelectionColor,
                       textChange: (vals) {
                         validationService.changeCurrentPassword(vals);
                       },
                       obscure: true,
                       inputType: TextInputType.text,
+                      hintStyle: TextStyle(
+                          color: Theme.of(context).textSelectionColor),
                     ),
                     SizedBox(
                       height: 20,
                     ),
-                    textFileLogin(
+                    TextFileLogin(
                       hintText: "New password",
                       errorText: validationService.password.error,
-                      textIcon: Icon(Icons.lock),
-                      cursorColor: Colors.black,
+                      textIcon: Icon(
+                        Icons.lock,
+                        color: Theme.of(context).textSelectionColor,
+                      ),
+                      textStyleColor: Theme.of(context).textSelectionColor,
+                      cursorColor: Theme.of(context).textSelectionColor,
                       borderSideColor: Theme.of(context).primaryColor,
-                      textStyleColor: Colors.black,
                       textChange: (vals) {
                         validationService.changePassword(vals);
                       },
                       obscure: true,
                       inputType: TextInputType.text,
+                      hintStyle: TextStyle(
+                          color: Theme.of(context).textSelectionColor),
                     ),
                     SizedBox(
                       height: 20,
                     ),
-                    textFileLogin(
+                    TextFileLogin(
                       hintText: "repeat new password",
                       errorText: validationService.password2.error,
-                      textIcon: Icon(Icons.repeat),
-                      cursorColor: Colors.black,
+                      textIcon: Icon(
+                        Icons.repeat,
+                        color: Theme.of(context).textSelectionColor,
+                      ),
+                      textStyleColor: Theme.of(context).textSelectionColor,
+                      cursorColor: Theme.of(context).textSelectionColor,
                       borderSideColor: Theme.of(context).primaryColor,
-                      textStyleColor: Colors.black,
                       textChange: (vals) {
                         validationService.changePassword2(vals);
                       },
                       obscure: true,
                       inputType: TextInputType.text,
+                      hintStyle: TextStyle(
+                          color: Theme.of(context).textSelectionColor),
                     ),
                     Container(
-//                alignment: Alignment.center,
                       margin: EdgeInsets.only(
                           left: MediaQuery.of(context).size.width / 8),
                       child: Column(
-                        //                crossAxisAlignment: CrossAxisAlignment.center,
-                        //              mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
                           Row(
                             children: <Widget>[
                               validationService.passwordValid1 != true
-                                  ? Icon(Icons.clear)
-                                  : Icon(Icons.done),
-                              Text("Password must to have capital Letter")
+                                  ? Icon(
+                                      Icons.clear,
+                                      color:
+                                          Theme.of(context).textSelectionColor,
+                                    )
+                                  : Icon(
+                                      Icons.done,
+                                      color:
+                                          Theme.of(context).textSelectionColor,
+                                    ),
+                              Text("Password must to have capital Letter",
+                                  style: TextStyle(
+                                      color:
+                                          Theme.of(context).textSelectionColor))
                             ],
                           ),
                           Row(
                             children: <Widget>[
                               validationService.passwordValid0 != true
-                                  ? Icon(Icons.clear)
-                                  : Icon(Icons.done),
-                              Text("Password must to have small Letter")
+                                  ? Icon(
+                                      Icons.clear,
+                                      color:
+                                          Theme.of(context).textSelectionColor,
+                                    )
+                                  : Icon(
+                                      Icons.done,
+                                      color:
+                                          Theme.of(context).textSelectionColor,
+                                    ),
+                              Text("Password must to have small Letter",
+                                  style: TextStyle(
+                                      color:
+                                          Theme.of(context).textSelectionColor))
                             ],
                           ),
                           Row(
                             children: <Widget>[
                               validationService.passwordValid2 != true
-                                  ? Icon(Icons.clear)
-                                  : Icon(Icons.done),
-                              Text("Password must to have number")
+                                  ? Icon(
+                                      Icons.clear,
+                                      color:
+                                          Theme.of(context).textSelectionColor,
+                                    )
+                                  : Icon(
+                                      Icons.done,
+                                      color:
+                                          Theme.of(context).textSelectionColor,
+                                    ),
+                              Text("Password must to have number",
+                                  style: TextStyle(
+                                      color:
+                                          Theme.of(context).textSelectionColor))
                             ],
                           ),
                           Row(
                             children: <Widget>[
                               validationService.passwordValid3 != true
-                                  ? Icon(Icons.clear)
-                                  : Icon(Icons.done),
-                              Text("Password must to have symbols")
+                                  ? Icon(
+                                      Icons.clear,
+                                      color:
+                                          Theme.of(context).textSelectionColor,
+                                    )
+                                  : Icon(
+                                      Icons.done,
+                                      color:
+                                          Theme.of(context).textSelectionColor,
+                                    ),
+                              Text(
+                                "Password must to have symbols",
+                                style: TextStyle(
+                                    color:
+                                        Theme.of(context).textSelectionColor),
+                              )
                             ],
                           )
                         ],
@@ -209,7 +270,8 @@ class SettingScreen extends StatelessWidget {
                           color: Theme.of(context).primaryColor,
                           text: "Add Edit",
                           borderColor: Theme.of(context).primaryColor,
-                          textColor: Theme.of(context).accentColor,
+                          textColor: Theme.of(context)
+                              .textSelectionColor, //Theme.of(context).accentColor,
                           onPressed: () {
                             getOldData.addTheEdit(
                                 addService.imageFile,
