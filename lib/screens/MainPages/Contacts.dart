@@ -1,107 +1,61 @@
 import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_chat_ui_starter/Database/SQLDatabase.dart';
+import 'package:flutter_chat_ui_starter/models/phonesnumber.dart';
+import 'package:flutter_chat_ui_starter/provider/ContactsProvider.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:provider/provider.dart';
 
-class Contact0 extends StatefulWidget {
-  @override
-  State<StatefulWidget> createState() {
-    // TODO: implement createState
-    return _Contact0();
-  }
-}
-
-class _Contact0 extends State<Contact0> {
-  List<Contact> contacts = [];
-  List<Contact> contactsFiltered = [];
-  Map<String, Color> contactsColorMap = new Map();
-
-  @override
-  void initState() {
-    super.initState();
-    getPermissions();
-  }
-
-  getPermissions() async {
-    if (await Permission.contacts.request().isGranted) {
-      getAllContacts();
-    }
-  }
-
-//  String flattenPhoneNumber(String phoneStr) {
-//    return phoneStr.replaceAllMapped(RegExp(r'^(\+)|\D'), (Match m) {
-//      return m[0] == "+" ? "+" : "";
-//    });
-//  }
-
-  getAllContacts() async {
-    List colors = [Colors.green, Colors.indigo, Colors.yellow, Colors.orange];
-    int colorIndex = 0;
-    List<Contact> _contacts =
-        (await ContactsService.getContacts(withThumbnails: false)).toList();
-    _contacts.forEach((contact) {
-      Color baseColor = colors[colorIndex];
-      contactsColorMap[contact.displayName] = baseColor;
-      colorIndex++;
-      if (colorIndex == colors.length) {
-        colorIndex = 0;
-      }
-    });
-    setState(() {
-      contacts = _contacts;
-    });
-
-/*
-  var data = new Map();
-
-    for (int i = 0; i < contacts.length; i++) {
-      Contact contact = contacts[i];
-      data[i]['Name'] = contact.displayName;
-      data[i]['Name'] =
-          contact.phones.length > 0 ? contact.phones.elementAt(0).value : '';
-    }
-    print(data);*/
-  }
-
+class Contact0 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Theme.of(context).accentColor,
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(30.0),
-          topRight: Radius.circular(30.0),
-        ),
-      ),
-      child: ClipRRect(
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(30.0),
-          topRight: Radius.circular(30.0),
-        ),
-        child: ListView.builder(
-          shrinkWrap: true,
-          itemCount: contacts.length,
-          itemBuilder: (context, index) {
-            Contact contact = contacts[index];
+    //final contactProvider = Provider.of<ContactProvider>(context);
+    final contactProvider = Provider.of<SQLDatabase>(context);
 
-            return contact.phones.length > 0
-                ? ListTile(
-                    title: Text(
-                      contact.displayName == null ? '' : contact.displayName,
-                      style: TextStyle(
-                          color: Theme.of(context).textSelectionColor),
-                    ),
-                    subtitle: Text(
-                        contact.phones.length > 0
-                            ? contact.phones.elementAt(0).value
-                            : '',
-                        style: TextStyle(
-                            color: Theme.of(context).textSelectionColor)),
-                  )
-                : Container();
-          },
+    return Container(
+        decoration: BoxDecoration(
+          color: Theme.of(context).accentColor,
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(30.0),
+            topRight: Radius.circular(30.0),
+          ),
         ),
-      ),
-    );
+        child: ClipRRect(
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(30.0),
+              topRight: Radius.circular(30.0),
+            ),
+            child: StreamBuilder<List>(
+              initialData: List(),
+              stream: contactProvider.getAllProducts().asStream(),
+              builder: (context, snapshot) {
+                return snapshot.hasData
+                    ? ListView.builder(
+                        itemCount: snapshot.data.length,
+                        itemBuilder: (_, int position) {
+                          var _data = contactProvider.results;
+                          return ListTile(
+                              title: Text(_data[position].row[1]),
+                              subtitle: Text(_data[position].row[2]),
+                              leading: Container(
+                                  child: Container(
+                                width: MediaQuery.of(context).size.width /
+                                    7.854545455,
+                                height: MediaQuery.of(context).size.height /
+                                    7.854545455,
+                                child: ClipRRect(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(120)),
+                                  child: Image.network(_data[position].row[3]),
+                                ),
+                              )));
+                        },
+                      )
+                    : Center(
+                        child: CircularProgressIndicator(),
+                      );
+              },
+            )));
   }
 }

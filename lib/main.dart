@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_ui_starter/provider/AppColorTheme.dart';
+import 'package:flutter_chat_ui_starter/provider/ContactsProvider.dart';
 import 'package:flutter_chat_ui_starter/provider/TextFieldProvider.dart';
 import 'package:flutter_chat_ui_starter/provider/oldDataProvider.dart';
+import 'package:path/path.dart';
+import 'package:sqflite/sqflite.dart';
+import 'Database/SQLDatabase.dart';
 import 'provider/HomeProvider.dart';
 import 'provider/LoginProvider.dart';
 import 'provider/SignUpProvider.dart';
@@ -13,11 +17,15 @@ import 'screens/MainPages/home.dart';
 Future main() async {
   Provider.debugCheckInvalidValueType = null;
   WidgetsFlutterBinding.ensureInitialized();
+  SQLDatabase.db.initDB();
   SharedPreferences prefs = await SharedPreferences.getInstance();
   runApp(MultiProvider(
     providers: [
       ChangeNotifierProvider(
         create: (context) => SignUpProvider(),
+      ),
+      ChangeNotifierProvider(
+        create: (context) => ContactProvider(),
       ),
       ChangeNotifierProvider(
         create: (context) => HomeProvider(),
@@ -33,6 +41,9 @@ Future main() async {
       ),
       ChangeNotifierProvider(
         create: (context) => ThemeNotifier(),
+      ),
+      ChangeNotifierProvider(
+        create: (context) => SQLDatabase(),
       ),
     ],
     child: ChangeNotifierProvider(

@@ -2,6 +2,7 @@ import 'package:community_material_icon/community_material_icon.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_ui_starter/provider/AppColorTheme.dart';
+import 'package:flutter_chat_ui_starter/provider/ContactsProvider.dart';
 import 'package:flutter_chat_ui_starter/provider/HomeProvider.dart';
 import 'package:flutter_chat_ui_starter/provider/oldDataProvider.dart';
 import 'package:flutter_chat_ui_starter/screens/FloatButtons/Setting_Screen.dart';
@@ -65,11 +66,36 @@ class _FloatingButton extends State<FloatingButton>
   Widget build(BuildContext context) {
     final _homeProvider = Provider.of<HomeProvider>(context);
     final getOldData = Provider.of<OldDataProvider>(context);
+    final cart = Provider.of<ContactProvider>(context, listen: true);
 
     // TODO: implement build
     return Column(
       mainAxisAlignment: MainAxisAlignment.end,
       children: <Widget>[
+        _homeProvider.index == 1
+            ? Transform.translate(
+                offset:
+                    Offset.fromDirection(degOneTransitionAnimation.value * 100),
+                child: Transform(
+                    transform: Matrix4.rotationZ(
+                        unitRadianMethod(rotationAnimation.value))
+                      ..scale(degOneTransitionAnimation.value),
+                    child: FloatingActionButton(
+                      heroTag: "Return",
+                      backgroundColor: Theme.of(context).primaryColor,
+                      onPressed: () {
+                        print("vvvvvvvvvvvvv");
+                        cart.getAllContacts();
+                      },
+                      child: Icon(
+                        Icons.refresh,
+                        color: Theme.of(context).textSelectionColor,
+                      ),
+                    )),
+              )
+            : Container(
+                width: 0,
+              ),
         Transform.translate(
           offset: Offset.fromDirection(degOneTransitionAnimation.value * 100),
           child: Transform(
@@ -77,7 +103,7 @@ class _FloatingButton extends State<FloatingButton>
                   Matrix4.rotationZ(unitRadianMethod(rotationAnimation.value))
                     ..scale(degOneTransitionAnimation.value),
               child: FloatingActionButton(
-                heroTag: "a",
+                heroTag: "setting",
                 backgroundColor: Theme.of(context).primaryColor,
                 onPressed: () {
                   print("vvvvvvvvvvvvv");
@@ -101,7 +127,7 @@ class _FloatingButton extends State<FloatingButton>
                     ..scale(degTwoTransitionAnimation.value),
               child: Consumer<ThemeNotifier>(
                   builder: (context, notifier, child) => FloatingActionButton(
-                        heroTag: "s",
+                        heroTag: "darkAndLight",
                         backgroundColor: Theme.of(context).primaryColor,
                         onPressed: () {
                           notifier.toggleChangeTheme();
@@ -125,7 +151,7 @@ class _FloatingButton extends State<FloatingButton>
                     Matrix4.rotationZ(unitRadianMethod(rotationAnimation.value))
                       ..scale(degThreeTransitionAnimation.value),
                 child: FloatingActionButton(
-                  heroTag: "/Login",
+                  heroTag: "logOut",
                   backgroundColor: Theme.of(context).primaryColor,
                   onPressed: () {
                     print("bbbbbbbbbbbbbb");
@@ -141,7 +167,7 @@ class _FloatingButton extends State<FloatingButton>
                 Matrix4.rotationZ(unitRadianMethod(rotationAnimation.value)),
             alignment: Alignment.center,
             child: FloatingActionButton(
-              heroTag: "d",
+              heroTag: "menu",
               backgroundColor: Theme.of(context).primaryColor,
               onPressed: () {
                 if (animationController.isCompleted) {

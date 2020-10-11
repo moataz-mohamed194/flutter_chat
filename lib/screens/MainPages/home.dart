@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_ui_starter/Widget/CategorySelector.dart';
-import 'package:flutter_chat_ui_starter/Widget/FloatingButton.dart';
+import 'package:flutter_chat_ui_starter/screens/FloatButtons/FloatingButton.dart';
 import 'package:flutter_chat_ui_starter/provider/HomeProvider.dart';
 import 'package:provider/provider.dart';
 
