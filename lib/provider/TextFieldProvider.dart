@@ -37,6 +37,7 @@ class TextFieldProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  //to check if full data is added in sign up
   bool get signUpIsValid {
     if (nameData.value != null &&
         phoneNumberData.value != null &&
@@ -48,6 +49,7 @@ class TextFieldProvider extends ChangeNotifier {
     }
   }
 
+  //to check if full data is added in sign in
   bool get signInIsValid {
     if (phoneNumberData.value != null && passwordData.value != null) {
       return true;
@@ -56,6 +58,7 @@ class TextFieldProvider extends ChangeNotifier {
     }
   }
 
+  //validation of name the user add it
   void changeName(String value) {
     if (value.length >= 3 && value.contains(RegExp('([0-9])')) == false) {
       nameData = ValidationItem(value, null);
@@ -65,6 +68,7 @@ class TextFieldProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  // validation of phone number to the user add it
   void changePhoneNumber(String value) {
     bool phoneNumberValid = RegExp("([0-9])").hasMatch(value);
     if (phoneNumberValid == true && value.length == 13) {
@@ -76,10 +80,12 @@ class TextFieldProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  //bool values to check if password user validated
   bool passwordValid0;
   bool passwordValid1;
   bool passwordValid2;
   bool passwordValid3;
+  //validation the user password entered have small char, chape  char, special mark and number
   void changePassword(String value) {
     passwordValid0 = RegExp(r"[a-z]").hasMatch(value);
     passwordValid1 = RegExp(r"[A-Z]").hasMatch(value);
@@ -109,6 +115,7 @@ class TextFieldProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  //check the code the user will enter
   changecode(String value) {
     codeData = ValidationItem(value, null);
     notifyListeners();

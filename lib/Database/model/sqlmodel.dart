@@ -17,7 +17,6 @@ class OldPhonesNumbers {
   String image;
 
   OldPhonesNumbers(this.name, this.phoneNumber, this.image);
-  //OldPhonesNumbers(this.name, this.phoneNumber, this.image,this.id);
   Map<String, dynamic> toMap() {
     return {'name': name, 'phoneNumber': phoneNumber, 'image': image};
   }
@@ -29,17 +28,4 @@ class OldPhonesNumbers {
       json['image'],
     );
   }
-//  factory OldPhonesNumbers.fromMap(Map<String, dynamic> json) => new OldPhonesNumbers(
-//   id: json["id"],
-//    name: json["name"],
-//    phoneNumber: json["phoneNumber"],
-//    image: json["image"]
-//  );
-
-//  Map<String, dynamic> toMap() => {
-//        "id": id,
-//        "name": name,
-//        "phoneNumber": phoneNumber,
-//        "image": image,
-//      };
 }

@@ -1,35 +1,35 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_chat_ui_starter/Widget/Loading_Screen.dart';
 import 'package:flutter_chat_ui_starter/models/message_model.dart';
 import 'package:flutter_chat_ui_starter/models/user_model.dart';
+import 'package:flutter_chat_ui_starter/provider/TextFieldProvider.dart';
+import 'package:flutter_chat_ui_starter/provider/chatProvider.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ChatScreen extends StatelessWidget {
   final User user;
 
   ChatScreen({this.user});
+  String d0;
+  getMe() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    this.d0 = prefs.get('PhoneNumber').toString();
+  }
 
-  /*@override
-  _ChatScreenState createState() => _ChatScreenState();
-}
-
-class _ChatScreenState extends State<ChatScreen> {*/
-  _buildMessage(Message message, bool isMe, context) {
+  _buildMessage(String message, bool isMe, String date, context) {
     final Container msg = Container(
-      margin: isMe
-          ? EdgeInsets.only(
-              top: 8.0,
-              bottom: 8.0,
-              left: 80.0,
-            )
-          : EdgeInsets.only(
-              top: 8.0,
-              bottom: 8.0,
-            ),
+      margin: EdgeInsets.only(
+        top: 8.0,
+        bottom: 8.0,
+      ),
       padding: EdgeInsets.symmetric(horizontal: 25.0, vertical: 15.0),
       width: MediaQuery.of(context).size.width * 0.75,
       decoration: BoxDecoration(
-        color: isMe
-            ? Theme.of(context).accentColor
-            : Theme.of(context).accentColor,
+        color:
+            isMe ? Theme.of(context).accentColor : Theme.of(context).cardColor,
         borderRadius: isMe
             ? BorderRadius.only(
                 topLeft: Radius.circular(15.0),
@@ -41,10 +41,11 @@ class _ChatScreenState extends State<ChatScreen> {*/
               ),
       ),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment:
+            isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
         children: <Widget>[
           Text(
-            message.time,
+            "$date",
             style: TextStyle(
               color: Colors.blueGrey,
               fontSize: 16.0,
@@ -53,7 +54,7 @@ class _ChatScreenState extends State<ChatScreen> {*/
           ),
           SizedBox(height: 8.0),
           Text(
-            message.text,
+            message,
             style: TextStyle(
               color: Colors.blueGrey,
               fontSize: 16.0,
@@ -63,27 +64,33 @@ class _ChatScreenState extends State<ChatScreen> {*/
         ],
       ),
     );
-    if (isMe) {
-      return msg;
-    }
     return Row(
+      textDirection: isMe ? TextDirection.rtl : TextDirection.ltr,
       children: <Widget>[
         msg,
         IconButton(
-          icon: message.isLiked
+          icon:
+              /*message.isLiked
               ? Icon(Icons.favorite)
-              : Icon(Icons.favorite_border),
+              :*/
+              Icon(Icons.favorite_border),
           iconSize: 30.0,
-          color: message.isLiked
+          color:
+              /*message.isLiked
               ? Theme.of(context).primaryColor
-              : Colors.blueGrey,
+              : */
+              Colors.blueGrey,
           onPressed: () {},
         )
       ],
     );
   }
 
-  _buildMessageComposer(context) {
+  //the text controller
+  final TextEditingController _textEditingController = TextEditingController();
+  //the design of enter messages component
+  _buildMessageComposer(String phone, context) {
+    final chatProviderMessage = Provider.of<ChatProvider>(context);
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 8.0),
       height: 70.0,
@@ -92,6 +99,7 @@ class _ChatScreenState extends State<ChatScreen> {*/
         children: <Widget>[
           Expanded(
             child: TextField(
+              controller: _textEditingController,
               textCapitalization: TextCapitalization.sentences,
               onChanged: (value) {},
               decoration: InputDecoration.collapsed(
@@ -103,7 +111,12 @@ class _ChatScreenState extends State<ChatScreen> {*/
             icon: Icon(Icons.send),
             iconSize: 25.0,
             color: Theme.of(context).primaryColor,
-            onPressed: () {},
+            onPressed: () {
+//              _textEditingController.text.isEmpty ??
+              chatProviderMessage.sendMessage(
+                  phone, _textEditingController.text);
+              _textEditingController.clear();
+            },
           ),
         ],
       ),
@@ -112,6 +125,7 @@ class _ChatScreenState extends State<ChatScreen> {*/
 
   @override
   Widget build(BuildContext context) {
+    final getMessageService = Provider.of<ChatProvider>(context);
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColor,
       appBar: AppBar(
@@ -138,24 +152,49 @@ class _ChatScreenState extends State<ChatScreen> {*/
                   ),
                 ),
                 child: ClipRRect(
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(30.0),
-                    topRight: Radius.circular(30.0),
-                  ),
-                  child: ListView.builder(
-                    reverse: true,
-                    padding: EdgeInsets.only(top: 15.0),
-                    itemCount: messages.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      final Message message = messages[index];
-                      final bool isMe = message.sender.id == currentUser.id;
-                      return _buildMessage(message, isMe, context);
-                    },
-                  ),
-                ),
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(30.0),
+                      topRight: Radius.circular(30.0),
+                    ),
+                    child: StreamBuilder(
+                      stream: FirebaseDatabase()
+                          .reference()
+                          .child('Account')
+                          .child("${getMessageService.d0}")
+                          .child('${user.phone}')
+                          .onValue,
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData &&
+                            snapshot.data.snapshot.value != null) {
+                          Event e = snapshot.data;
+                          Map<dynamic, dynamic> map = e.snapshot.value;
+                          List<dynamic> list;
+                          list = map.values.toList()
+                            ..sort((a, b) => b['Time'].compareTo(a['Time']));
+                          return ListView.builder(
+                            itemCount: list.length,
+                            reverse: true,
+                            itemBuilder: (context, index) {
+                              Timestamp myTimeStamp =
+                                  Timestamp.fromMicrosecondsSinceEpoch(
+                                      list[index]["Time"]);
+                              DateTime myDateTime = myTimeStamp.toDate();
+                              String myDateTime0 = myDateTime.toString();
+                              return _buildMessage(
+                                  list[index]["Body"],
+                                  list[index]["isMe"],
+                                  "${myDateTime0.substring(0, 16)}",
+                                  context);
+                            },
+                          );
+                        } else {
+                          return LoadingScreen();
+                        }
+                      },
+                    )),
               ),
             ),
-            _buildMessageComposer(context),
+            _buildMessageComposer(user.phone, context),
           ],
         ),
       ),

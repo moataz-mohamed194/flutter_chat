@@ -11,6 +11,7 @@ class OldDataProvider extends ChangeNotifier {
   String name;
   String password;
   String image;
+  //get the name from shared preferences
   getData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     name = prefs.getString('Name');
@@ -20,7 +21,7 @@ class OldDataProvider extends ChangeNotifier {
   }
 
   File imageFile;
-
+  //check if user want change password, image or name will send that new data to database
   addTheEdit(var imageNew, var passwordNew, var acceptPassword, var nameNew,
       BuildContext context) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -50,7 +51,7 @@ class OldDataProvider extends ChangeNotifier {
       print(imageString);
     }
     if (passwordNew != null && acceptPassword == true) {
-      FirebaseUser user = await FirebaseAuth.instance.currentUser();
+      var user = await FirebaseAuth.instance.currentUser;
 
       user.updatePassword(passwordNew).then((_) {
         print("Succesfull changed password");

@@ -43,7 +43,7 @@ class SignUpProvider extends ChangeNotifier {
 
   File imageFile;
   ValidationItem get code => _code;
-
+  // alert if there is any wrong will display
   alert(BuildContext context) {
     showDialog(
         context: context,
@@ -125,12 +125,14 @@ class SignUpProvider extends ChangeNotifier {
         phoneNumberD == null ||
         passwordD == null ||
         password2D == null) {
+      alert(context);
     } else {
       signUpUser(nameD, phoneNumberD, passwordD, password2D, context);
       notifyListeners();
     }
   }
 
+  //check the code the user will enter
   changecode(String value) {
     _code = ValidationItem(value, null);
     notifyListeners();
@@ -139,7 +141,8 @@ class SignUpProvider extends ChangeNotifier {
   final _codeController = TextEditingController();
 
   String _convertPhoneToEmail;
-  String _error;
+  String error;
+  //sign up to add user data to database and when receive code check if code is right or not
   Future<void> signUpUser(String name, String phone, String password,
       String password2, BuildContext context) async {
     FirebaseAuth _auth = FirebaseAuth.instance;
@@ -158,7 +161,7 @@ class SignUpProvider extends ChangeNotifier {
         phoneNumber: phone,
         timeout: Duration(seconds: 20),
         verificationCompleted: (AuthCredential credential) async {
-          AuthResult result = await _auth.signInWithCredential(credential);
+          var result = await _auth.signInWithCredential(credential);
 
           FirebaseUser user = result.user;
           _convertPhoneToEmail = '$phone@gmail.com';
@@ -203,14 +206,14 @@ class SignUpProvider extends ChangeNotifier {
                 });
               });
             }).catchError((e) {
-              _error =
+              error =
                   "PlatformException(ERROR_EMAIL_ALREADY_IN_USE, The email address is already in use by another account., null)";
             });
           } else {
             print("Error");
           }
         },
-        verificationFailed: (AuthException exception) {
+        verificationFailed: (var exception) {
           print(exception.message);
           Toast.show("${exception.message}", context,
               duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
@@ -329,7 +332,7 @@ class SignUpProvider extends ChangeNotifier {
                                           verificationId: verificationId,
                                           smsCode: code);
 
-                                  AuthResult result = await _auth
+                                  var result = await _auth
                                       .signInWithCredential(credential);
 
                                   FirebaseUser user = result.user;
@@ -391,7 +394,7 @@ class SignUpProvider extends ChangeNotifier {
                                         });
                                       });
                                     }).catchError((e) {
-                                      _error =
+                                      error =
                                           "PlatformException(ERROR_EMAIL_ALREADY_IN_USE, The email address is already in use by another account., null)";
                                     });
                                   } else {
@@ -407,6 +410,7 @@ class SignUpProvider extends ChangeNotifier {
         codeAutoRetrievalTimeout: null);
   }
 
+  //open gallery to choose between pics in gallery
   Future<void> openGallery(BuildContext context) async {
     var picture = await ImagePicker.pickImage(source: ImageSource.gallery);
     imageFile = picture;
@@ -421,6 +425,7 @@ class SignUpProvider extends ChangeNotifier {
         });
   }
 
+  //open camera to take pic
   Future<void> openCamera(BuildContext context) async {
     var picture = await ImagePicker.pickImage(source: ImageSource.camera);
     imageFile = picture;
@@ -429,7 +434,7 @@ class SignUpProvider extends ChangeNotifier {
 
   int counter = 70;
   Timer _timer;
-
+  //is the counter when be zero send code again
   page() {
     counter = 70;
     if (_timer != null) {

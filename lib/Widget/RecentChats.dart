@@ -41,11 +41,7 @@ class RecentChats extends StatelessWidget {
                     padding:
                         EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
                     decoration: BoxDecoration(
-                      color:
-                          /*chat.unread
-                          ? Color(0xFFFFEFEE)
-                          : */
-                          Theme.of(context).accentColor,
+                      color: Theme.of(context).accentColor,
                       borderRadius: BorderRadius.only(
                         topRight: Radius.circular(20.0),
                         bottomRight: Radius.circular(20.0),
@@ -93,7 +89,7 @@ class RecentChats extends StatelessWidget {
                         Column(
                           children: <Widget>[
                             Text(
-                              chat.time,
+                              "chat.time",
                               style: TextStyle(
                                 color: Colors.grey,
                                 fontSize: 15.0,
@@ -101,26 +97,26 @@ class RecentChats extends StatelessWidget {
                               ),
                             ),
                             SizedBox(height: 5.0),
-                            chat.unread
-                                ? Container(
-                                    width: 40.0,
-                                    height: 20.0,
-                                    decoration: BoxDecoration(
-                                      color: Theme.of(context).primaryColor,
-                                      borderRadius: BorderRadius.circular(30.0),
-                                    ),
-                                    alignment: Alignment.center,
-                                    child: Text(
-                                      'NEW',
-                                      style: TextStyle(
-                                        color: Color(
-                                            0xFFFEF9EB), // Theme.of(context).accentColor,
-                                        fontSize: 12.0,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                  )
-                                : Text(''),
+//                            chat.unread
+//                                ? Container(
+//                                    width: 40.0,
+//                                    height: 20.0,
+//                                    decoration: BoxDecoration(
+//                                      color: Theme.of(context).primaryColor,
+//                                      borderRadius: BorderRadius.circular(30.0),
+//                                    ),
+//                                    alignment: Alignment.center,
+//                                    child: Text(
+//                                      'NEW',
+//                                      style: TextStyle(
+//                                        color: Color(
+//                                            0xFFFEF9EB), // Theme.of(context).accentColor,
+//                                        fontSize: 12.0,
+//                                        fontWeight: FontWeight.bold,
+//                                      ),
+//                                    ),
+//                                  )
+//                                : Text(''),
                           ],
                         ),
                       ],

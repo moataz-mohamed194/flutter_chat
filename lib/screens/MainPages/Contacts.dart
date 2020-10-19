@@ -1,18 +1,17 @@
-import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_ui_starter/Database/SQLDatabase.dart';
-import 'package:flutter_chat_ui_starter/models/phonesnumber.dart';
+import 'package:flutter_chat_ui_starter/Widget/Loading_Screen.dart';
+import 'package:flutter_chat_ui_starter/models/user_model.dart';
 import 'package:flutter_chat_ui_starter/provider/ContactsProvider.dart';
-import 'package:permission_handler/permission_handler.dart';
+import 'package:flutter_chat_ui_starter/screens/Chat/ChatScreen.dart';
 import 'package:provider/provider.dart';
 
 class Contact0 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    //final contactProvider = Provider.of<ContactProvider>(context);
-    final contactProvider = Provider.of<SQLDatabase>(context);
-
+    final contactProviderData = Provider.of<ContactProvider>(context);
+    final sQLDatabaseData = Provider.of<SQLDatabase>(context);
     return Container(
         decoration: BoxDecoration(
           color: Theme.of(context).accentColor,
@@ -26,35 +25,70 @@ class Contact0 extends StatelessWidget {
               topLeft: Radius.circular(30.0),
               topRight: Radius.circular(30.0),
             ),
-            child: StreamBuilder<List>(
+            child: FutureBuilder<List>(
               initialData: List(),
-              stream: contactProvider.getAllProducts().asStream(),
+              future: sQLDatabaseData.getAllProducts(),
               builder: (context, snapshot) {
-                return snapshot.hasData
-                    ? ListView.builder(
-                        itemCount: snapshot.data.length,
-                        itemBuilder: (_, int position) {
-                          var _data = contactProvider.results;
-                          return ListTile(
-                              title: Text(_data[position].row[1]),
-                              subtitle: Text(_data[position].row[2]),
-                              leading: Container(
-                                  child: Container(
-                                width: MediaQuery.of(context).size.width /
-                                    7.854545455,
-                                height: MediaQuery.of(context).size.height /
-                                    7.854545455,
-                                child: ClipRRect(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(120)),
-                                  child: Image.network(_data[position].row[3]),
-                                ),
-                              )));
-                        },
-                      )
-                    : Center(
-                        child: CircularProgressIndicator(),
+                if (snapshot.data.length > 0) {
+                  return ListView.builder(
+                    itemCount: sQLDatabaseData.results.length,
+                    itemBuilder: (_, int position) {
+                      var _data = sQLDatabaseData.results;
+                      final User currentUser = User(
+                          id: _data[position].row[0],
+                          name: "${_data[position].row[1]}",
+                          phone: "${_data[position].row[2]}",
+                          imageUrl: "${_data[position].row[3]}");
+
+                      return GestureDetector(
+                        onTap: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => ChatScreen(
+                              user: currentUser,
+                            ),
+                          ),
+                        ),
+                        child: ListTile(
+                            title: Text(
+                              _data[position].row[1],
+                              style: TextStyle(
+                                color: Theme.of(context).textSelectionColor,
+                              ),
+                            ),
+                            subtitle: Text(_data[position].row[2],
+                                style: TextStyle(
+                                  color: Theme.of(context).textSelectionColor,
+                                )),
+                            leading: Container(
+                                child: Container(
+                              width: MediaQuery.of(context).size.width /
+                                  7.854545455,
+                              height: MediaQuery.of(context).size.height /
+                                  7.854545455,
+                              child: ClipRRect(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(120)),
+                                child: Image.network(_data[position].row[3]),
+                              ),
+                            ))),
                       );
+                    },
+                  );
+                } else if (snapshot.data.length <= 0 &&
+                    contactProviderData.loadingStart == false &&
+                    sQLDatabaseData.start == false) {
+                  return LoadingScreen();
+                } else if (snapshot.data.length <= 0 &&
+                    contactProviderData.loadingStart == true) {
+                  return LoadingScreen();
+                } else {
+                  return Container(
+                    alignment: Alignment.center,
+                    width: MediaQuery.of(context).size.width,
+                    child: Text("Nothing found!!"),
+                  );
+                }
               },
             )));
   }

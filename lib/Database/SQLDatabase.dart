@@ -1,18 +1,17 @@
-import 'dart:io';
-
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
-
 import 'model/sqlmodel.dart';
 
 class SQLDatabase extends ChangeNotifier {
-  SQLDatabase() {}
+  SQLDatabase();
   List results;
+  bool start = false;
   SQLDatabase._();
+
   static final SQLDatabase db = SQLDatabase._();
   static Database _database;
+
   Future<Database> get database async {
     if (_database != null) return _database;
     _database = await initDB();
@@ -20,12 +19,14 @@ class SQLDatabase extends ChangeNotifier {
   }
 
   initDB() async {
-    //Directory documentsDirectory = await getApplicationDocumentsDirectory();
     String path = join(await getDatabasesPath(), 'whatsApp.db');
     return await openDatabase(path, version: 5, onOpen: (db) {},
         onCreate: (Database db, int version) async {
       await db.execute(
         "CREATE TABLE phonesNumbers(id INTEGER PRIMARY KEY AUTOINCREMENT , name TEXT, phoneNumber TEXT UNIQUE, image TEXT)",
+      );
+      await db.execute(
+        "CREATE TABLE oldChat(id INTEGER PRIMARY KEY AUTOINCREMENT , name TEXT, phoneNumber TEXT UNIQUE, image TEXT)",
       );
     });
   }
@@ -54,7 +55,6 @@ class SQLDatabase extends ChangeNotifier {
     } catch (e) {
       print(e);
     }
-//     results + w;
     notifyListeners();
     return result;
   }
@@ -70,8 +70,8 @@ class SQLDatabase extends ChangeNotifier {
   Future<List> getAllProducts() async {
     final db = await database;
     results = await db.query("phonesNumbers");
+    start = true;
     notifyListeners();
-
     return results.toList();
   }
 }
