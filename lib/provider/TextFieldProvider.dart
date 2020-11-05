@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_chat_ui_starter/models/ValidationItem.dart';
+import '../models/ValidationItem.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class TextFieldProvider extends ChangeNotifier {

@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_chat_ui_starter/Database/SQLDatabase.dart';
-import 'package:flutter_chat_ui_starter/Widget/Loading_Screen.dart';
-import 'package:flutter_chat_ui_starter/models/user_model.dart';
-import 'package:flutter_chat_ui_starter/provider/ContactsProvider.dart';
-import 'package:flutter_chat_ui_starter/screens/Chat/ChatScreen.dart';
+import '../../Database/SQLDatabase.dart';
+import '../../Widget/Loading_Widget.dart';
+import '../../models/user_model.dart';
+import '../../provider/ContactsProvider.dart';
+import '../../screens/Chat/ChatScreen.dart';
 import 'package:provider/provider.dart';
 
 class Contact0 extends StatelessWidget {

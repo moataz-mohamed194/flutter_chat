@@ -1,12 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_chat_ui_starter/Widget/buttonWidget.dart';
-import 'package:flutter_chat_ui_starter/Widget/lineWordWeight.dart';
-import 'package:flutter_chat_ui_starter/Widget/textfield.dart';
-import 'package:flutter_chat_ui_starter/provider/SignUpProvider.dart';
-import 'package:flutter_chat_ui_starter/provider/TextFieldProvider.dart';
-import 'package:flutter_chat_ui_starter/screens/LoginAndSignUpPages/Login_screen.dart';
+import '../../Widget/buttonWidget.dart';
+import '../../Widget/lineWordWeight.dart';
+import '../../Widget/textfield.dart';
+import '../../provider/SignUpProvider.dart';
+import '../../provider/TextFieldProvider.dart';
+import '../../screens/LoginAndSignUpPages/Login_screen.dart';
 import 'package:provider/provider.dart';
 
 class CustomClipPath extends CustomClipper<Path> {

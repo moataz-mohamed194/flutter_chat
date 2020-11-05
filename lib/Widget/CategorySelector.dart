@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_chat_ui_starter/provider/HomeProvider.dart';
+import '../provider/HomeProvider.dart';
 import 'package:provider/provider.dart';
 
 class CategorySelector extends StatefulWidget {

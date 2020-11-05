@@ -29,3 +29,30 @@ class OldPhonesNumbers {
     );
   }
 }
+
+class OldPhonesMessage {
+  int id;
+  String name;
+  String message;
+  String phoneNumber;
+  String image;
+
+  OldPhonesMessage(this.name, this.phoneNumber, this.image, this.message);
+  Map<String, dynamic> toMap() {
+    return {
+      'name': name,
+      'phoneNumber': phoneNumber,
+      'message': message,
+      'image': image
+    };
+  }
+
+  factory OldPhonesMessage.fromMap(Map<String, dynamic> json) {
+    return OldPhonesMessage(
+      json['name'],
+      json['phoneNumber'],
+      json['message'],
+      json['image'],
+    );
+  }
+}

@@ -1,11 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_chat_ui_starter/Widget/Loading_Screen.dart';
-import 'package:flutter_chat_ui_starter/models/message_model.dart';
-import 'package:flutter_chat_ui_starter/models/user_model.dart';
-import 'package:flutter_chat_ui_starter/provider/TextFieldProvider.dart';
-import 'package:flutter_chat_ui_starter/provider/chatProvider.dart';
+import '../../Widget/Loading_Widget.dart';
+import '../../models/user_model.dart';
+import '../../provider/chatProvider.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -89,7 +87,7 @@ class ChatScreen extends StatelessWidget {
   //the text controller
   final TextEditingController _textEditingController = TextEditingController();
   //the design of enter messages component
-  _buildMessageComposer(String phone, context) {
+  _buildMessageComposer(String phone, context, String name, String image) {
     final chatProviderMessage = Provider.of<ChatProvider>(context);
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 8.0),
@@ -114,7 +112,7 @@ class ChatScreen extends StatelessWidget {
             onPressed: () {
 //              _textEditingController.text.isEmpty ??
               chatProviderMessage.sendMessage(
-                  phone, _textEditingController.text);
+                  phone, _textEditingController.text, name, image);
               _textEditingController.clear();
             },
           ),
@@ -161,6 +159,7 @@ class ChatScreen extends StatelessWidget {
                           .reference()
                           .child('Account')
                           .child("${getMessageService.d0}")
+                          .child('Chat')
                           .child('${user.phone}')
                           .onValue,
                       builder: (context, snapshot) {
@@ -188,13 +187,18 @@ class ChatScreen extends StatelessWidget {
                             },
                           );
                         } else {
-                          return LoadingScreen();
+                          return Container(
+                            alignment: Alignment.center,
+                            width: MediaQuery.of(context).size.width,
+                            child: Text("Nothing found!!"),
+                          );
                         }
                       },
                     )),
               ),
             ),
-            _buildMessageComposer(user.phone, context),
+            _buildMessageComposer(
+                user.phone, context, user.name, user.imageUrl),
           ],
         ),
       ),

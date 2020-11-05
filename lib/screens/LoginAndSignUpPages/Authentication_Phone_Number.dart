@@ -1,10 +1,10 @@
 import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_chat_ui_starter/Widget/buttonWidget.dart';
-import 'package:flutter_chat_ui_starter/Widget/lineWordWeight.dart';
-import 'package:flutter_chat_ui_starter/Widget/textfield.dart';
-import 'package:flutter_chat_ui_starter/provider/TextFieldProvider.dart';
+import '../../Widget/buttonWidget.dart';
+import '../../Widget/lineWordWeight.dart';
+import '../../Widget/textfield.dart';
+import '../../provider/TextFieldProvider.dart';
 import 'package:provider/provider.dart';
 
 var count = 70;

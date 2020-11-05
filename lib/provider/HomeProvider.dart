@@ -1,13 +1,15 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_chat_ui_starter/Widget/RecentChats.dart';
-import 'package:flutter_chat_ui_starter/screens/MainPages/Contacts.dart';
-import 'package:flutter_chat_ui_starter/screens/MainPages/Favorite.dart';
+import '../screens/Pages/Contacts.dart';
+import '../screens/Pages/Favorite.dart';
+import '../screens/Pages/RecentChats.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeProvider extends ChangeNotifier {
   int index = 0;
+  restartIndex() {
+    this.index = 0;
+  }
 
   Future<void> logOut(BuildContext context) async {
 //    final FirebaseAuth _auth = FirebaseAuth.instance;

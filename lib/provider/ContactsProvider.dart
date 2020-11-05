@@ -3,8 +3,8 @@ import 'package:contacts_service/contacts_service.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_chat_ui_starter/Database/SQLDatabase.dart';
-import 'package:flutter_chat_ui_starter/Database/model/sqlmodel.dart';
+import '../Database/SQLDatabase.dart';
+import '../Database/model/sqlmodel.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class ContactProvider extends ChangeNotifier {
@@ -13,7 +13,7 @@ class ContactProvider extends ChangeNotifier {
   //the list of contacts in database
   var webData;
   bool loadingStart = false;
-  //get the contacts from firebase and from phone and remove any mark in phone contacts
+
   getAllContacts() async {
     loadingStart = true;
     notifyListeners();

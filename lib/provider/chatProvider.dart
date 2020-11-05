@@ -1,53 +1,58 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_chat_ui_starter/Database/SQLDatabase.dart';
+import 'package:flutter_chat_ui_starter/Database/model/sqlmodel.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:intl/intl.dart';
 
 class ChatProvider extends ChangeNotifier {
-  sendMessage(String toNumber, String body) async {
+  sendMessage(String toNumber, String body, String name, String image) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String senderNumber = prefs.get('PhoneNumber');
-    //    DateTime now = DateTime.now();
-//    DateFormat formatter = DateFormat('yyyy-MM-dd Hm');
-//    var formatted = formatter.format(now);
-    DateTime currentPhoneDate = DateTime.now(); //DateTime
-    Timestamp myTimeStamp = Timestamp.fromDate(currentPhoneDate);
+    DateFormat formatter = DateFormat('yyyy-MM-dd HH:mm:ss');
+    DateTime currentPhoneDate = DateTime.now().toUtc(); //DateTime
+    var formatted = formatter.format(currentPhoneDate);
+    DateTime dateTime = DateTime.parse(formatted);
+    Timestamp myTimeStamp = Timestamp.fromDate(dateTime);
+    DateTime currentPhoneDate0 = DateTime.now(); //DateTime
+    var formatted0 = formatter.format(currentPhoneDate0);
+    DateTime dateTime0 = DateTime.parse(formatted0);
+    Timestamp myTimeStamp0 = Timestamp.fromDate(dateTime0);
 
-    DateTime myDateTime = myTimeStamp.toDate(); // TimeStamp to DateTime
     FirebaseDatabase.instance
         .reference()
         .child('Account')
         .child(senderNumber)
+        .child('Chat')
         .child(toNumber)
-        //.push()
         .child("${myTimeStamp.microsecondsSinceEpoch}")
         .set({
       'Body': body,
-      'Time': myTimeStamp.microsecondsSinceEpoch,
+      'Time': myTimeStamp0.microsecondsSinceEpoch,
       'isMe': true
     }).whenComplete(() {
       FirebaseDatabase.instance
           .reference()
           .child('Account')
           .child(toNumber)
+          .child('Chat')
           .child(senderNumber)
-          //.push()
           .child("${myTimeStamp.microsecondsSinceEpoch}")
           .set({
         'Body': body,
-        'Time': myTimeStamp.microsecondsSinceEpoch,
+        'Time': myTimeStamp0.microsecondsSinceEpoch,
         'isMe': false
-      }).whenComplete(() => print("Done"));
+      }).whenComplete(() {
+        try {
+          SQLDatabase.db.insertOldContact(
+              new OldPhonesMessage(name, toNumber, image, body));
+          print("Done");
+        } catch (e) {
+          print("000" + e);
+        }
+      });
     });
-    print("data will save in my account");
-    print("his number: $toNumber");
-    print("body of message: $body");
-    print("time of message: ${myTimeStamp.microsecondsSinceEpoch}");
-    print("data will save in friends account");
-    print("his number: $senderNumber");
-    print("body of message: $body");
-    print("time of message: $myTimeStamp");
     notifyListeners();
   }
 
@@ -61,7 +66,6 @@ class ChatProvider extends ChangeNotifier {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     this.d0 = prefs.get('PhoneNumber').toString();
     notifyListeners();
-    // return this.d0;
   }
 
   Future<Map> getMessageData(String phoneNumberD) async {
@@ -72,6 +76,7 @@ class ChatProvider extends ChangeNotifier {
         .reference()
         .child('Account')
         .child(myNumber)
+        .child('Chat')
         .child('$phoneNumberD')
         .once());
     return data.value;

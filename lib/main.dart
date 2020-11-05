@@ -1,11 +1,11 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_chat_ui_starter/provider/AppColorTheme.dart';
-import 'package:flutter_chat_ui_starter/provider/ContactsProvider.dart';
-import 'package:flutter_chat_ui_starter/provider/TextFieldProvider.dart';
-import 'package:flutter_chat_ui_starter/provider/oldDataProvider.dart';
+import 'provider/AppColorTheme.dart';
+import 'provider/ContactsProvider.dart';
+import 'provider/TextFieldProvider.dart';
+import 'provider/oldDataProvider.dart';
+import 'screens/mainPage/home.dart';
 import 'Database/SQLDatabase.dart';
-import 'Widget/Loading_Screen.dart';
 import 'provider/HomeProvider.dart';
 import 'provider/LoginProvider.dart';
 import 'provider/SignUpProvider.dart';
@@ -13,7 +13,6 @@ import 'provider/chatProvider.dart';
 import 'screens/LoginAndSignUpPages/Login_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'screens/MainPages/home.dart';
 
 Future main() async {
   Provider.debugCheckInvalidValueType = null;

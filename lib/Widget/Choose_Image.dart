@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_chat_ui_starter/provider/SignUpProvider.dart';
+import '../provider/SignUpProvider.dart';
 import 'package:provider/provider.dart';
 
 class ChooseImage extends StatefulWidget {

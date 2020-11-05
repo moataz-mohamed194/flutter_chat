@@ -1,11 +1,11 @@
 import 'package:community_material_icon/community_material_icon.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_chat_ui_starter/provider/AppColorTheme.dart';
-import 'package:flutter_chat_ui_starter/provider/ContactsProvider.dart';
-import 'package:flutter_chat_ui_starter/provider/HomeProvider.dart';
-import 'package:flutter_chat_ui_starter/provider/oldDataProvider.dart';
-import 'package:flutter_chat_ui_starter/screens/FloatButtons/Setting_Screen.dart';
+import '../../provider/AppColorTheme.dart';
+import '../../provider/ContactsProvider.dart';
+import '../../provider/HomeProvider.dart';
+import '../../provider/oldDataProvider.dart';
+import '../../screens/FloatButtons/Setting_Screen.dart';
 import 'package:provider/provider.dart';
 
 class FloatingButton extends StatefulWidget {

@@ -1,14 +1,19 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_chat_ui_starter/Widget/CategorySelector.dart';
-import 'package:flutter_chat_ui_starter/screens/FloatButtons/FloatingButton.dart';
-import 'package:flutter_chat_ui_starter/provider/HomeProvider.dart';
+import '../../Widget/CategorySelector.dart';
+import '../../screens/FloatButtons/FloatingButton.dart';
+import '../../provider/HomeProvider.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreen extends StatelessWidget {
+  int indexData;
+
+  //HomeScreen(this.indexData);
+
   @override
   Widget build(BuildContext context) {
     var data = Provider.of<HomeProvider>(context, listen: true);
+    //data.index = 0;
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColor,
       appBar: AppBar(
@@ -32,10 +37,16 @@ class HomeScreen extends StatelessWidget {
       body: Column(
         children: <Widget>[
           CategorySelector(),
+          /*Consumer<HomeProvider>(
+              // selector: (context, fontiSize2) => fontiSize2.getFontize2,
+              builder: (context, fontSize, widget) {
+            print('$widget Hi from font size 2 consumer!${fontSize.index}');
+            return*/
           Expanded(
             flex: 1,
             child: data.widgets[data.index],
-          ),
+          ) /*;
+          })*/
         ],
       ),
 //      ),
