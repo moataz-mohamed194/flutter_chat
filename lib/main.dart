@@ -60,7 +60,7 @@ Future main() async {
         return MaterialApp(
           debugShowCheckedModeBanner: false,
           title: 'Chat',
-          theme: notifier.darkMode ? darkMode : lightMode,
+          theme: notifier.darkMode ? lightMode : darkMode,
           routes: <String, WidgetBuilder>{
             '/HomeScreen': (BuildContext context) => new HomeScreen(),
             '/Login': (BuildContext context) => new LoginScreen(),
