@@ -27,51 +27,6 @@ class CustomClipPath extends CustomClipper<Path> {
 }
 
 class SignUp extends StatelessWidget {
-/*  final _codeController = TextEditingController();
-  Future<bool> loginUser(String phone, BuildContext context) async {
-    FirebaseAuth _auth = FirebaseAuth.instance;
-    _auth.verifyPhoneNumber(
-        phoneNumber: phone,
-        timeout: Duration(seconds: 60),
-        verificationCompleted: (AuthCredential credential) async {
-          Navigator.of(context).pop();
-          print("ggggggggggggggggggggggggggggg");
-          AuthResult result = await _auth.signInWithCredential(credential);
-          FirebaseUser user = result.user;
-          if (user != null) {
-            print("vvvvvvvvvvvvvvvvvvvvvvvvvvv");
-            Navigator.push(
-                context, MaterialPageRoute(builder: (context) => home()));
-          } else {
-            print("Error");
-          }
-        },
-        verificationFailed: (AuthException exception) {
-          print(exception.message);
-        },
-        codeSent: (String verificationId, [int forceResendingToken]) async {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => AuthenticationPhoneNumber()));
-          final code = _codeController.text.trim();
-          AuthCredential credential = PhoneAuthProvider.getCredential(
-              verificationId: verificationId, smsCode: code);
-          print("xxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
-          AuthResult result = await _auth.signInWithCredential(credential);
-          FirebaseUser user = result.user;
-          if (user != null) {
-            print("kkkkkkkkkkkkkkkkkkkk");
-            Navigator.push(
-                context, MaterialPageRoute(builder: (context) => home()));
-          } else {
-            print("Error");
-          }
-        },
-        codeAutoRetrievalTimeout: null);
-  }
-*/
-
   GlobalKey<ScaffoldState> scaffoldState = new GlobalKey<ScaffoldState>();
   showSnackBar(String data) {
     scaffoldState.currentState.showSnackBar(new SnackBar(
@@ -113,9 +68,14 @@ class SignUp extends StatelessWidget {
                               Text("Welcome!",
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
+                                      color:
+                                          Theme.of(context).textSelectionColor,
                                       fontSize: 25)),
                               Text("in our family",
-                                  style: TextStyle(fontSize: 17)),
+                                  style: TextStyle(
+                                    fontSize: 17,
+                                    color: Theme.of(context).textSelectionColor,
+                                  )),
                               Container(
                                   height: 130,
                                   width: 200,
@@ -136,10 +96,15 @@ class SignUp extends StatelessWidget {
                                             borderRadius: BorderRadius.all(
                                                 Radius.circular(120)),
                                             child: addService.imageFile == null
-                                                ? Container(
+                                                ? Image.asset(
+                                                    'assets/images/empty.png',
+                                                    height: 120,
+                                                    width: 120,
+                                                  )
+                                                /*Container(
                                                     height: 0,
                                                     width: 0,
-                                                  )
+                                                  )*/
                                                 : Image.file(
                                                     addService.imageFile,
                                                     height: 120,
@@ -155,7 +120,8 @@ class SignUp extends StatelessWidget {
                                             icon: Icon(
                                               Icons.control_point,
                                               size: 35,
-                                              color: Colors.black,
+                                              color: Theme.of(context)
+                                                  .textSelectionColor,
                                             ),
                                             onPressed: () {
                                               addService.onChoseImage(context);
@@ -281,20 +247,8 @@ class SignUp extends StatelessWidget {
                         color: Theme.of(context).primaryColor,
                         text: "SIGN UP",
                         borderColor: Theme.of(context).primaryColor,
-                        textColor: Theme.of(context).accentColor,
+                        textColor: Theme.of(context).textSelectionColor,
                         onPressed: () {
-                          //validationService.loginUser('+201221917976', context);
-                          //validationService.loginUser('+201289555089', context);
-                          //loginUser('+201221917976', context);
-                          /*FirebaseDatabase.instance
-                              .reference()
-                              .child('000')
-                              .push()
-                              .set({
-                            'PhoneNumber': '_phoneNumber.value',
-                            'Name': '_name.value',
-                            'Password': '_password.value'
-                          });*/
                           (!validationService.signUpIsValid)
                               ? addService.alert(context)
                               : addService.signUpNext(

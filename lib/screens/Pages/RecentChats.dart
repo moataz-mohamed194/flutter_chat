@@ -1,13 +1,9 @@
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_chat_ui_starter/Database/SQLDatabase.dart';
-import 'package:flutter_chat_ui_starter/Database/model/sqlmodel.dart';
-import 'package:flutter_chat_ui_starter/Widget/Loading_Widget.dart';
-import 'package:flutter_chat_ui_starter/models/user_model.dart';
-import 'package:flutter_chat_ui_starter/provider/chatProvider.dart';
+import '../../Database/SQLDatabase.dart';
+import '../../Widget/Loading_Widget.dart';
+import '../../models/user_model.dart';
+import '../../provider/chatProvider.dart';
 import 'package:provider/provider.dart';
-import '../../models/message_model.dart';
 import '../../screens/Chat/ChatScreen.dart';
 
 class RecentChats extends StatelessWidget {
@@ -48,7 +44,8 @@ class RecentChats extends StatelessWidget {
                               name: "${_data[position].row[1]}",
                               phone: "${_data[position].row[2]}",
                               imageUrl: "${_data[position].row[3]}");
-
+                          sQLDatabaseData.insertOldContact0(
+                              _data[position].row[2], chatProviderData.d0);
                           return GestureDetector(
                             onTap: () => Navigator.push(
                               context,
@@ -88,8 +85,12 @@ class RecentChats extends StatelessWidget {
                       );
                     } else if (snapshot.data.isEmpty &&
                         sQLDatabaseData.start == false) {
+                      sQLDatabaseData.insertOldContact0(0, chatProviderData.d0);
+
                       return LoadingScreen();
                     } else {
+                      sQLDatabaseData.insertOldContact0(0, chatProviderData.d0);
+
                       return Container(
                         alignment: Alignment.center,
                         width: MediaQuery.of(context).size.width,

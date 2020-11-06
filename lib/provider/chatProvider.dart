@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_chat_ui_starter/Database/SQLDatabase.dart';
-import 'package:flutter_chat_ui_starter/Database/model/sqlmodel.dart';
+import '../Database/SQLDatabase.dart';
+import '../Database/model/sqlmodel.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:intl/intl.dart';
 
@@ -62,7 +62,7 @@ class ChatProvider extends ChangeNotifier {
   ChatProvider() {
     getMe();
   }
-  Future<String> getMe() async {
+  Future<void> getMe() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     this.d0 = prefs.get('PhoneNumber').toString();
     notifyListeners();

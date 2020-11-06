@@ -62,9 +62,14 @@ class LoginScreen extends StatelessWidget {
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize:
-                                      MediaQuery.of(context).size.width / 17),
+                                      MediaQuery.of(context).size.width / 17,
+                                  color: Theme.of(context).textSelectionColor),
                             ),
-                            Text("Login to continue"),
+                            Text(
+                              "Login to continue",
+                              style: TextStyle(
+                                  color: Theme.of(context).textSelectionColor),
+                            ),
                           ],
                         ),
                       ),
@@ -74,14 +79,19 @@ class LoginScreen extends StatelessWidget {
                       TextFileLogin(
                         hintText: "Phone Number",
                         errorText: validationService.phoneNumber.error,
-                        textIcon: Icon(Icons.phone),
-                        cursorColor: Colors.black,
+                        textIcon: Icon(
+                          Icons.phone,
+                          color: Theme.of(context).textSelectionColor,
+                        ),
+                        cursorColor: Theme.of(context).textSelectionColor,
                         borderSideColor: Theme.of(context).primaryColor,
-                        textStyleColor: Colors.black,
+                        textStyleColor: Theme.of(context).textSelectionColor,
                         textChange: (vals) {
                           validationService.changePhoneNumber(vals);
                         },
                         inputType: TextInputType.phone,
+                        hintStyle: TextStyle(
+                            color: Theme.of(context).textSelectionColor),
                       ),
                       SizedBox(
                         height: 20,
@@ -89,13 +99,18 @@ class LoginScreen extends StatelessWidget {
                       TextFileLogin(
                         hintText: "Password",
                         errorText: validationService.password.error,
-                        textIcon: Icon(Icons.lock),
+                        textIcon: Icon(
+                          Icons.lock,
+                          color: Theme.of(context).textSelectionColor,
+                        ),
                         textChange: (vals) {
                           validationService.changePassword(vals);
                         },
-                        cursorColor: Colors.black,
+                        cursorColor: Theme.of(context).textSelectionColor,
                         borderSideColor: Theme.of(context).primaryColor,
-                        textStyleColor: Colors.black,
+                        textStyleColor: Theme.of(context).textSelectionColor,
+                        hintStyle: TextStyle(
+                            color: Theme.of(context).textSelectionColor),
                         obscure: true,
                       ),
                       SizedBox(
@@ -107,7 +122,7 @@ class LoginScreen extends StatelessWidget {
                         },
                         textStyleColor: Theme.of(context).primaryColor,
                         buttonText: 'Forget Password?',
-                        buttonSize: 12,
+                        buttonSize: 16,
                         weightButton: FontWeight.bold,
                       ),
                       SizedBox(
@@ -122,7 +137,7 @@ class LoginScreen extends StatelessWidget {
                             color: Theme.of(context).primaryColor,
                             text: "LOGIN",
                             borderColor: Theme.of(context).primaryColor,
-                            textColor: Theme.of(context).accentColor,
+                            textColor: Theme.of(context).textSelectionColor,
                             onPressed: () async {
                               (!validationService.signInIsValid)
                                   ? addService.alert(context)

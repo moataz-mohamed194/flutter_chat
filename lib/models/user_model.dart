@@ -4,11 +4,6 @@ class User {
   String phone;
   final String imageUrl;
 
-//  User({
-//    this.id,
-//    this.name,
-//    this.imageUrl,
-//  });
   User({
     this.id,
     this.name,
