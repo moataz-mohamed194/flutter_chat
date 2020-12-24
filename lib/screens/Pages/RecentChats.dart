@@ -9,7 +9,6 @@ class RecentChats extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final sQLDatabaseData = Provider.of<SQLDatabase>(context);
-    //final HomeProvider0 = Provider.of<ChatProvider>(context);
 
     return Container(
         decoration: BoxDecoration(
@@ -82,12 +81,8 @@ class RecentChats extends StatelessWidget {
                       );
                     } else if (snapshot.data.isEmpty &&
                         sQLDatabaseData.start == false) {
-                     // sQLDatabaseData.insertOldContact0(0, chatProviderData.d0);
-
                       return LoadingScreen();
                     } else {
-                      //sQLDatabaseData.insertOldContact0(0, chatProviderData.d0);
-
                       return Container(
                         alignment: Alignment.center,
                         width: MediaQuery.of(context).size.width,

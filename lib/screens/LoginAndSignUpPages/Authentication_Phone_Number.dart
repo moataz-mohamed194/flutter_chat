@@ -44,7 +44,6 @@ class AuthenticationPhoneNumber extends StatelessWidget {
           children: <Widget>[
             Container(
                 height: MediaQuery.of(context).size.height / 2,
-                //width: 200,
                 width: MediaQuery.of(context).size.width - 20,
                 margin: EdgeInsets.only(
                     right: 10,

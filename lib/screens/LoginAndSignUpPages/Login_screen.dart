@@ -130,8 +130,6 @@ class LoginScreen extends StatelessWidget {
                       ),
                       Container(
                         width: MediaQuery.of(context).size.width / 1.25,
-                        // margin: EdgeInsets.only(
-                        //   bottom: MediaQuery.of(context).size.width / 10),
                         child: ButtonWidget(
                             height: 50,
                             color: Theme.of(context).primaryColor,

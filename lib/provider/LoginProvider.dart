@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -83,31 +82,6 @@ class LoginProvider extends ChangeNotifier {
           );
         });
   }
-//
-//  loginFacebook() async {
-//    final facebookLogin = FacebookLogin();
-//
-//    final result = await facebookLogin.logInWithReadPermissions(['email']);
-//
-//    switch (result.status) {
-//      case FacebookLoginStatus.loggedIn:
-//        final token = result.accessToken.token;
-//        final graphResponse = await http.get(
-//            'https://graph.facebook.com/v2.12/me?fields=name,picture,email&access_token=$token');
-//        final profile = JSON.jsonDecode(graphResponse.body);
-//        print(token);
-//        print(profile);
-//
-//        break;
-//
-//      case FacebookLoginStatus.cancelledByUser:
-//        print("ggg");
-//        break;
-//      case FacebookLoginStatus.error:
-//        print(FacebookLoginStatus.error);
-//        break;
-//    }
-//  }
 
   loginNext(BuildContext context, var phoneNumberD, var passwordD) async {
     if (phoneNumberD == null || passwordD == null) {
@@ -115,10 +89,6 @@ class LoginProvider extends ChangeNotifier {
       print(TextFieldProvider().passwordData.value);
       alert(context);
     } else {
-      String convertPhoneToEmail = '$phoneNumberD@gmail.com';
-      //try {
-      //   await FirebaseAuth.instance.signInWithEmailAndPassword(
-      //       email: convertPhoneToEmail, password: passwordD);
         FirebaseDatabase()
             .reference()
             .child('Account')
@@ -135,12 +105,10 @@ class LoginProvider extends ChangeNotifier {
               await prefs.setString('Password', '${value['Password']}');
               await prefs.setString('PhoneNumber', '${value['PhoneNumber']}');
               await prefs.setString('image', '${value['image']}');
-//final data = Provider.of<HomeProvider>(context);
               HomeProvider q = new HomeProvider();
               q.restartIndex();
 
               Provider.of<HomeProvider>(context, listen: false).index0 = 0;
-              //Provider.of<SQLDatabase>(context, listen: false).cleanTables();
               print("ddddddddddddddddddddddddddd");
               Navigator.of(context).pushNamedAndRemoveUntil(
                   '/HomeScreen', (Route<dynamic> route) => false);
@@ -157,22 +125,7 @@ class LoginProvider extends ChangeNotifier {
 
           }
         });
-        // } catch (e) {
-        // print(e);
-        /*if (e.code == 'user-not-found') {
-          print('No user found for that email.');
-          Toast.show('No user found for that phone number.', context,
-              duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
-        } else if (e.code == 'wrong-password') {
-          print('Wrong password provided for that user.');
-          Toast.show('Wrong password provided for that user.', context,
-              duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
-        }else{
 
-          Toast.show('$e.', context,
-              duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
-        }*/
-       // }
     }
   }
 }

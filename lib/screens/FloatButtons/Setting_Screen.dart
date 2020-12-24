@@ -271,7 +271,7 @@ class SettingScreen extends StatelessWidget {
                           text: "Add Edit",
                           borderColor: Theme.of(context).primaryColor,
                           textColor: Theme.of(context)
-                              .textSelectionColor, //Theme.of(context).accentColor,
+                              .textSelectionColor,
                           onPressed: () {
                             getOldData.addTheEdit(
                                 addService.imageFile,
@@ -279,14 +279,6 @@ class SettingScreen extends StatelessWidget {
                                 validationService.boolEdit,
                                 validationService.nameData.value,
                                 context);
-//                           (!validationService.signUpIsValid)
-//                              ? addService.alert(context)
-//                              : addService.signUpNext(
-//                              context,
-//                              validationService.nameData.value,
-//                              validationService.phoneNumberData.value,
-//                              validationService.passwordData.value,
-//                              validationService.password2Data.value);
                           }),
                     ),
                   ],
