@@ -116,9 +116,9 @@ class LoginProvider extends ChangeNotifier {
       alert(context);
     } else {
       String convertPhoneToEmail = '$phoneNumberD@gmail.com';
-      try {
-        await FirebaseAuth.instance.signInWithEmailAndPassword(
-            email: convertPhoneToEmail, password: passwordD);
+      //try {
+      //   await FirebaseAuth.instance.signInWithEmailAndPassword(
+      //       email: convertPhoneToEmail, password: passwordD);
         FirebaseDatabase()
             .reference()
             .child('Account')
@@ -127,29 +127,39 @@ class LoginProvider extends ChangeNotifier {
             .then((DataSnapshot snapshot) async {
           final value = snapshot.value as Map;
           SharedPreferences prefs = await SharedPreferences.getInstance();
+          try{
           for (final key in value.keys) {
-//            print(key);
-//            print('${value['Name']}');
-//            print('${value['Password']}');
-//            print('${value['PhoneNumber']}');
-//            print('${value['image']}');
-            await prefs.setString('Login', 'Yes');
-            await prefs.setString('Name', '${value['Name']}');
-            await prefs.setString('Password', '${value['Password']}');
-            await prefs.setString('PhoneNumber', '${value['PhoneNumber']}');
-            await prefs.setString('image', '${value['image']}');
+            if(passwordD==value['Password']){
+              await prefs.setString('Login', 'Yes');
+              await prefs.setString('Name', '${value['Name']}');
+              await prefs.setString('Password', '${value['Password']}');
+              await prefs.setString('PhoneNumber', '${value['PhoneNumber']}');
+              await prefs.setString('image', '${value['image']}');
+//final data = Provider.of<HomeProvider>(context);
+              HomeProvider q = new HomeProvider();
+              q.restartIndex();
+
+              Provider.of<HomeProvider>(context, listen: false).index0 = 0;
+              //Provider.of<SQLDatabase>(context, listen: false).cleanTables();
+              print("ddddddddddddddddddddddddddd");
+              Navigator.of(context).pushNamedAndRemoveUntil(
+                  '/HomeScreen', (Route<dynamic> route) => false);
+
+            }
+            else{
+              Toast.show('Wrong password provided for that user.', context,
+                  duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
+
+            }
+            }}catch(e){
+            Toast.show('not found user.', context,
+                duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
+
           }
         });
-        //final data = Provider.of<HomeProvider>(context);
-        HomeProvider q = new HomeProvider();
-        q.restartIndex();
-        Provider.of<HomeProvider>(context, listen: false).index = 0;
-        print("ddddddddddddddddddddddddddd");
-        Navigator.of(context).pushNamedAndRemoveUntil(
-            '/HomeScreen', (Route<dynamic> route) => false);
-      } catch (e) {
-        print(e);
-        if (e.code == 'user-not-found') {
+        // } catch (e) {
+        // print(e);
+        /*if (e.code == 'user-not-found') {
           print('No user found for that email.');
           Toast.show('No user found for that phone number.', context,
               duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
@@ -157,8 +167,12 @@ class LoginProvider extends ChangeNotifier {
           print('Wrong password provided for that user.');
           Toast.show('Wrong password provided for that user.', context,
               duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
-        }
-      }
+        }else{
+
+          Toast.show('$e.', context,
+              duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
+        }*/
+       // }
     }
   }
 }

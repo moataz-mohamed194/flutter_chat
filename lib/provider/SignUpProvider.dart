@@ -175,11 +175,6 @@ class SignUpProvider extends ChangeNotifier {
               var data = 'Profiles/$phone.jpg';
               final StorageUploadTask uploadTask =
                   storageReference.putData(imageFile.readAsBytesSync());
-
-              /*final StreamSubscription<StorageTaskEvent> streamSubscription =
-                  uploadTask.events.listen((event) {
-                print('EVENT ${event.type}');
-              });*/
               final ref = FirebaseStorage().ref().child(data);
               var imageString = await ref.getDownloadURL();
               print("sssssssssssssssssssssssssssss");

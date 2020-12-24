@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -25,10 +26,10 @@ class OldDataProvider extends ChangeNotifier {
   addTheEdit(var imageNew, var passwordNew, var acceptPassword, var nameNew,
       BuildContext context) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String convertPhoneToEmail = '${await prefs.get('PhoneNumber')}@gmail.com';
-    String passwordD = await prefs.get('Password');
-    await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: convertPhoneToEmail, password: passwordD);
+    // String convertPhoneToEmail = '${await prefs.get('PhoneNumber')}@gmail.com';
+    // String passwordD = await prefs.get('Password');
+    // await FirebaseAuth.instance.signInWithEmailAndPassword(
+    //     email: convertPhoneToEmail, password: passwordD);
 
     imageFile = imageNew;
     if (imageNew != null) {
@@ -66,13 +67,18 @@ class OldDataProvider extends ChangeNotifier {
       await prefs.setString('Name', '$nameNew');
       print(nameNew);
     }
+    final FirebaseMessaging _fcm = FirebaseMessaging();
+
+    String fcmToken = await _fcm.getToken();
+
     FirebaseDatabase.instance
         .reference()
         .child('Account')
         .child(await prefs.get('PhoneNumber'))
-        .set({
+        .update({
       'PhoneNumber': await prefs.get('PhoneNumber'),
       'Name': await prefs.get('Name'),
+      "Token": fcmToken,
       'Password': await prefs.get('Password'),
       'image': await prefs.get('image')
     }).whenComplete(() {

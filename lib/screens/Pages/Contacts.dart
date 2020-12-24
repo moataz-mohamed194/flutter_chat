@@ -26,70 +26,75 @@ class Contact0 extends StatelessWidget {
               topRight: Radius.circular(30.0),
             ),
             child: FutureBuilder<List>(
-              initialData: List(),
-              future: sQLDatabaseData.getAllProducts(),
-              builder: (context, snapshot) {
-                if (snapshot.data.length > 0) {
-                  return ListView.builder(
-                    itemCount: sQLDatabaseData.results.length,
-                    itemBuilder: (_, int position) {
-                      var _data = sQLDatabaseData.results;
-                      final User currentUser = User(
-                          id: _data[position].row[0],
-                          name: "${_data[position].row[1]}",
-                          phone: "${_data[position].row[2]}",
-                          imageUrl: "${_data[position].row[3]}");
+                initialData: List(),
+                future: sQLDatabaseData.getAllProducts(),
+                builder: (context, snapshot) {
+                  List<Widget> children;
+                  if (snapshot.connectionState == ConnectionState.done ||
+                      snapshot.connectionState == ConnectionState.active ||
+                      snapshot.data.length > 0) {
+                    children = <Widget>[
+                      Expanded(
+                          child: ListView.builder(
+                        itemCount: sQLDatabaseData.results.length,
+                        itemBuilder: (_, int position) {
+                          var _data = sQLDatabaseData.results;
+                          final User currentUser = User(
+                              id: _data[position].row[0],
+                              name: "${_data[position].row[1]}",
+                              phone: "${_data[position].row[2]}",
+                              imageUrl: "${_data[position].row[3]}");
 
-                      return GestureDetector(
-                        onTap: () => Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (_) => ChatScreen(
-                              user: currentUser,
-                            ),
-                          ),
-                        ),
-                        child: ListTile(
-                            title: Text(
-                              _data[position].row[1],
-                              style: TextStyle(
-                                color: Theme.of(context).textSelectionColor,
+                          return GestureDetector(
+                            onTap: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => ChatScreen(
+                                  user: currentUser,
+                                ),
                               ),
                             ),
-                            subtitle: Text(_data[position].row[2],
-                                style: TextStyle(
-                                  color: Theme.of(context).textSelectionColor,
-                                )),
-                            leading: Container(
-                                child: Container(
-                              width: MediaQuery.of(context).size.width /
-                                  7.854545455,
-                              height: MediaQuery.of(context).size.height /
-                                  7.854545455,
-                              child: ClipRRect(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(120)),
-                                child: Image.network(_data[position].row[3]),
-                              ),
-                            ))),
-                      );
-                    },
+                            child: ListTile(
+                                title: Text(
+                                  _data[position].row[1],
+                                  style: TextStyle(
+                                    color: Theme.of(context).textSelectionColor,
+                                  ),
+                                ),
+                                subtitle: Text(_data[position].row[2],
+                                    style: TextStyle(
+                                      color:
+                                          Theme.of(context).textSelectionColor,
+                                    )),
+                                leading: Container(
+                                    child: Container(
+                                  width: MediaQuery.of(context).size.width /
+                                      7.854545455,
+                                  height: MediaQuery.of(context).size.height /
+                                      7.854545455,
+                                  child: ClipRRect(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(120)),
+                                    child:
+                                        Image.network(_data[position].row[3]),
+                                  ),
+                                ))),
+                          );
+                        },
+                      ))
+                    ];
+                  } else if (snapshot.hasError) {
+                    children = <Widget>[
+                      Center(
+                        child: Text("${snapshot.error}"),
+                      )
+                    ];
+                  } else {
+                    children = <Widget>[LoadingScreen()];
+                  }
+                  return Column(
+                    children: children,
                   );
-                } else if (snapshot.data.length <= 0 &&
-                    contactProviderData.loadingStart == false &&
-                    sQLDatabaseData.start == false) {
-                  return LoadingScreen();
-                } else if (snapshot.data.length <= 0 &&
-                    contactProviderData.loadingStart == true) {
-                  return LoadingScreen();
-                } else {
-                  return Container(
-                    alignment: Alignment.center,
-                    width: MediaQuery.of(context).size.width,
-                    child: Text("Nothing found!!"),
-                  );
-                }
-              },
-            )));
+                })));
   }
 }

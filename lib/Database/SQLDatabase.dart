@@ -1,4 +1,3 @@
-import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
@@ -32,6 +31,11 @@ class SQLDatabase extends ChangeNotifier {
     });
   }
 
+  cleanTables() async {
+    await db.cleanTables();
+    notifyListeners();
+  }
+
   insert(OldPhonesNumbers product) async {
     final db = await database;
     var result;
@@ -61,58 +65,6 @@ class SQLDatabase extends ChangeNotifier {
   }
 
   var webData, webData0;
-
-  insertOldContact0(var q, var w) async {
-    webData = FirebaseDatabase()
-        .reference()
-        .child('Account')
-        .child(w)
-        .child("Chat")
-        .once();
-    webData.then((DataSnapshot snapshot) {
-      final value = snapshot.value as Map;
-      for (final key in value.keys) {
-        if (key != q) {
-          print(key);
-          webData0 =
-              FirebaseDatabase().reference().child('Account').child(key).once();
-
-          webData0.then((DataSnapshot snapshot0) async {
-            final value0 = snapshot0.value as Map;
-            for (final key0 in value0.keys) {
-              final db = await database;
-              try {
-                List results0 = await db.rawQuery(
-                    "SELECT * FROM phonesNumbers WHERE phoneNumber='$key'");
-                if (results0[0].row[3] != value0['image']) {
-                  db.rawUpdate(
-                      "UPDATE oldChat SET image = ? WHERE phoneNumber = ?",
-                      [value0['image'], key]);
-                }
-                try {
-                  List result1 = (await db.rawInsert(
-                      "INSERT Into oldChat ( name, phoneNumber, image,message)"
-                      " VALUES ( ?, ?, ?,?)",
-                      [
-                        results0[0].row[1],
-                        key,
-                        value0['image'],
-                        "Nothing"
-                      ]).whenComplete(() => print("done in sql"))) as List;
-                  results.add(result1);
-                  notifyListeners();
-                } catch (e) {
-                  print(e);
-                }
-              } catch (e) {
-                print(e);
-              }
-            }
-          });
-        }
-      }
-    });
-  }
 
   insertOldContact(OldPhonesMessage product) async {
     final db = await database;

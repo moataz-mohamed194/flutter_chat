@@ -72,7 +72,7 @@ class _FloatingButton extends State<FloatingButton>
     return Column(
       mainAxisAlignment: MainAxisAlignment.end,
       children: <Widget>[
-        _homeProvider.index == 1
+        _homeProvider.index0 == 1
             ? Transform.translate(
                 offset:
                     Offset.fromDirection(degOneTransitionAnimation.value * 100),

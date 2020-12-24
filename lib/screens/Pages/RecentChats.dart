@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import '../../Database/SQLDatabase.dart';
 import '../../Widget/Loading_Widget.dart';
 import '../../models/user_model.dart';
-import '../../provider/chatProvider.dart';
 import 'package:provider/provider.dart';
 import '../../screens/Chat/ChatScreen.dart';
 
@@ -10,7 +9,7 @@ class RecentChats extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final sQLDatabaseData = Provider.of<SQLDatabase>(context);
-    final chatProviderData = Provider.of<ChatProvider>(context);
+    //final HomeProvider0 = Provider.of<ChatProvider>(context);
 
     return Container(
         decoration: BoxDecoration(
@@ -30,9 +29,9 @@ class RecentChats extends StatelessWidget {
               transitionBuilder: (Widget child, Animation<double> animation) {
                 return ScaleTransition(child: child, scale: animation);
               },
-              child: FutureBuilder<List>(
+              child: StreamBuilder<List>(
                   initialData: List(),
-                  future: sQLDatabaseData.getAllOldContacts(),
+                  stream: sQLDatabaseData.getAllOldContacts().asStream(),
                   builder: (context, snapshot) {
                     if (snapshot.data.length > 0) {
                       return ListView.builder(
@@ -44,8 +43,6 @@ class RecentChats extends StatelessWidget {
                               name: "${_data[position].row[1]}",
                               phone: "${_data[position].row[2]}",
                               imageUrl: "${_data[position].row[3]}");
-                          sQLDatabaseData.insertOldContact0(
-                              _data[position].row[2], chatProviderData.d0);
                           return GestureDetector(
                             onTap: () => Navigator.push(
                               context,
@@ -85,11 +82,11 @@ class RecentChats extends StatelessWidget {
                       );
                     } else if (snapshot.data.isEmpty &&
                         sQLDatabaseData.start == false) {
-                      sQLDatabaseData.insertOldContact0(0, chatProviderData.d0);
+                     // sQLDatabaseData.insertOldContact0(0, chatProviderData.d0);
 
                       return LoadingScreen();
                     } else {
-                      sQLDatabaseData.insertOldContact0(0, chatProviderData.d0);
+                      //sQLDatabaseData.insertOldContact0(0, chatProviderData.d0);
 
                       return Container(
                         alignment: Alignment.center,

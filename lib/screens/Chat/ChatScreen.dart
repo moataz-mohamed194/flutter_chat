@@ -1,10 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_chat_ui_starter/Widget/Loading_Widget.dart';
+import 'package:flutter_chat_ui_starter/provider/HomeProvider.dart';
 import '../../models/user_model.dart';
 import '../../provider/chatProvider.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
 
 class ChatScreen extends StatelessWidget {
   final User user;
@@ -110,6 +113,7 @@ class ChatScreen extends StatelessWidget {
             color: Theme.of(context).primaryColor,
             onPressed: () {
 //              _textEditingController.text.isEmpty ??
+              //chatProviderMessage.sendAndRetrieveMessage();
               chatProviderMessage.sendMessage(
                   phone, _textEditingController.text, name, image);
               _textEditingController.clear();
@@ -122,7 +126,7 @@ class ChatScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final getMessageService = Provider.of<ChatProvider>(context);
+    final getMessageService = Provider.of<HomeProvider>(context);
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColor,
       appBar: AppBar(
@@ -162,36 +166,91 @@ class ChatScreen extends StatelessWidget {
                           .child('${user.phone}')
                           .onValue,
                       builder: (context, snapshot) {
-                        if (snapshot.hasData &&
-                            snapshot.data.snapshot.value != null) {
-                          Event e = snapshot.data;
-                          Map<dynamic, dynamic> map = e.snapshot.value;
+                        print(
+                            "Account; ${getMessageService.d0}; Chat; ${user.phone}");
+                        List<Widget> children;
+                        try{
+                        if(snapshot.hasError){
+                          children = <Widget>[ Center(
+                            child: Text("${snapshot.error}"),
+                          )];
+                        }else{
+                          Event e;
+                          Map<dynamic, dynamic> map ;
                           List<dynamic> list;
-                          list = map.values.toList()
-                            ..sort((a, b) => b['Time'].compareTo(a['Time']));
-                          return ListView.builder(
-                            itemCount: list.length,
-                            reverse: true,
-                            itemBuilder: (context, index) {
-                              Timestamp myTimeStamp =
-                                  Timestamp.fromMicrosecondsSinceEpoch(
-                                      list[index]["Time"]);
-                              DateTime myDateTime = myTimeStamp.toDate();
-                              String myDateTime0 = myDateTime.toString();
-                              return _buildMessage(
-                                  list[index]["Body"],
-                                  list[index]["isMe"],
-                                  "${myDateTime0.substring(0, 16)}",
-                                  context);
-                            },
-                          );
-                        } else {
-                          return Container(
-                            alignment: Alignment.center,
-                            width: MediaQuery.of(context).size.width,
-                            child: Text("Nothing found!!"),
+                          switch (snapshot.connectionState) {
+                            case ConnectionState.none:
+                              children = <Widget>[Container(
+                                alignment: Alignment.center,
+                                width: MediaQuery.of(context).size.width,
+                                child: Text("Nothing found!!"),
+                              )];
+                              break;
+                            case ConnectionState.waiting:
+                              children = <Widget>[LoadingScreen()];
+                              break;
+                            case ConnectionState.active:
+                              e = snapshot.data;
+                              map = e.snapshot.value;
+                              list = map.values.toList()
+                                ..sort((a, b) => b['Time'].compareTo(a['Time']));
+                              children = <Widget>[Expanded(
+                                // width:MediaQuery.of(context).size.width,
+                                //
+                                // height: MediaQuery.of(context).size.height-161,
+                                child: ListView.builder(
+                                  itemCount: list.length,
+                                  reverse: true,
+                                  itemBuilder: (context, index) {
+                                    Timestamp myTimeStamp =
+                                    Timestamp.fromMicrosecondsSinceEpoch(
+                                        list[index]["Time"]);
+                                    DateTime myDateTime = myTimeStamp.toDate();
+                                    String myDateTime0 = myDateTime.toString();
+                                    return _buildMessage(
+                                        list[index]["Body"],
+                                        list[index]["isMe"],
+                                        "${myDateTime0.substring(0, 16)}",
+                                        context);
+                                  },
+                                ),
+                              )];
+                              break;
+                            case ConnectionState.done:
+                              e = snapshot.data;
+                              map = e.snapshot.value;
+                              list = map.values.toList()
+                                ..sort((a, b) => b['Time'].compareTo(a['Time']));
+                              children = <Widget>[Expanded(
+
+                                //height: MediaQuery.of(context).size.height-161,
+                                child: ListView.builder(
+                                  itemCount: list.length,
+                                  reverse: true,
+                                  itemBuilder: (context, index) {
+                                    Timestamp myTimeStamp =
+                                    Timestamp.fromMicrosecondsSinceEpoch(
+                                        list[index]["Time"]);
+                                    DateTime myDateTime = myTimeStamp.toDate();
+                                    String myDateTime0 = myDateTime.toString();
+                                    return _buildMessage(
+                                        list[index]["Body"],
+                                        list[index]["isMe"],
+                                        "${myDateTime0.substring(0, 16)}",
+                                        context);
+                                  },
+                                ),
+                              )];
+                              break;
+                          }
+                        }}catch(e){
+                          return Center(
+                            child: Text("${e}"),
                           );
                         }
+                        return Column(
+                          children: children,
+                        );
                       },
                     )),
               ),

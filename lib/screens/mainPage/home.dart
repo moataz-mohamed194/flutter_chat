@@ -6,14 +6,10 @@ import '../../provider/HomeProvider.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreen extends StatelessWidget {
-  int indexData;
-
-  //HomeScreen(this.indexData);
 
   @override
   Widget build(BuildContext context) {
-    var data = Provider.of<HomeProvider>(context, listen: true);
-    //data.index = 0;
+    var data = Provider.of<HomeProvider>(context);
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColor,
       appBar: AppBar(
@@ -34,23 +30,36 @@ class HomeScreen extends StatelessWidget {
           ),
         ],
       ),
-      body: Column(
-        children: <Widget>[
-          CategorySelector(),
-          /*Consumer<HomeProvider>(
-              // selector: (context, fontiSize2) => fontiSize2.getFontize2,
-              builder: (context, fontSize, widget) {
-            print('$widget Hi from font size 2 consumer!${fontSize.index}');
-            return*/
-          Expanded(
-            flex: 1,
-            child: data.widgets[data.index],
-          ) /*;
-          })*/
-        ],
+      body: StatefulWrapper(
+        onInit: () {
+          data.getMainData();
+        },
+        child: Column(
+          children: <Widget>[
+            CategorySelector(),
+            Expanded(
+          flex: 1,
+          child: data.widgets[data.index0],
+        )
+          ],
+        ),
       ),
-//      ),
       floatingActionButton: FloatingButton(),
     );
   }
+}
+class StatefulWrapper extends StatefulWidget {
+  final Function onInit;
+  final Widget child;  const StatefulWrapper({@required this.onInit, @required this.child});  @override
+  _StatefulWrapperState createState() => _StatefulWrapperState();
+}class _StatefulWrapperState extends State<StatefulWrapper> {@override
+void initState() {
+  if(widget.onInit != null) {
+    widget.onInit();
+  }
+  super.initState();
+}  @override
+Widget build(BuildContext context) {
+  return widget.child;
+}
 }
