@@ -89,8 +89,15 @@ class Contact0 extends StatelessWidget {
                         child: Text("${snapshot.error}"),
                       )
                     ];
-                  } else {
+                  } else if((snapshot.data.isEmpty &&
+                      contactProviderData.loadingStart == true)/*||snapshot.connectionState == ConnectionState.waiting*/) {
                     children = <Widget>[LoadingScreen()];
+                  }else {
+                    children = <Widget>[Container(
+                      alignment: Alignment.center,
+                      width: MediaQuery.of(context).size.width,
+                      child: Text("Nothing found!!"),
+                    )];
                   }
                   return Column(
                     children: children,

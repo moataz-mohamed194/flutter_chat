@@ -136,7 +136,7 @@ class ChatScreen extends StatelessWidget {
                                   itemBuilder: (context, index) {
                                     Timestamp myTimeStamp =
                                     Timestamp.fromMicrosecondsSinceEpoch(
-                                        list[index]["Time"]);
+                                        list[index]["Time"]+7200000000);
                                     DateTime myDateTime = myTimeStamp.toDate();
                                     String myDateTime0 = myDateTime.toString();
                                     return MessageWidget(date: "${myDateTime0.substring(0, 16)}",
@@ -162,7 +162,7 @@ class ChatScreen extends StatelessWidget {
                                   itemBuilder: (context, index) {
                                     Timestamp myTimeStamp =
                                     Timestamp.fromMicrosecondsSinceEpoch(
-                                        list[index]["Time"]);
+                                        list[index]["Time"]+7200000000);
                                     DateTime myDateTime = myTimeStamp.toDate();
                                     String myDateTime0 = myDateTime.toString();
                                     return MessageWidget(date: "${myDateTime0.substring(0, 16)}",
@@ -178,7 +178,7 @@ class ChatScreen extends StatelessWidget {
                           }
                         }}catch(e){
                           return Center(
-                            child: Text("$e"),
+                            child: Text("Nothing"),
                           );
                         }
                         return Column(

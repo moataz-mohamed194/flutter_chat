@@ -113,9 +113,9 @@ class SQLDatabase extends ChangeNotifier {
   }
 
   Future<List> getAllProducts() async {
+    start = true;
     final db = await database;
     results = await db.query("phonesNumbers");
-    start = true;
     notifyListeners();
     return results.toList();
   }

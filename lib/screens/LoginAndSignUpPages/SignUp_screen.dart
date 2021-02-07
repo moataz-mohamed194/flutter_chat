@@ -257,6 +257,12 @@ class SignUp extends StatelessWidget {
                                   validationService.phoneNumberData.value,
                                   validationService.passwordData.value,
                                   validationService.password2Data.value);
+/*                          addService.signUpUser(
+
+                              "validationService.nameData.value",
+                              "validationService.phoneNumberData.value",
+                              "validationService.passwordData.value",
+                              "validationService.password2Data.value",context);*/
                         }),
                   ),
                   SizedBox(

@@ -34,7 +34,7 @@ class ChatProvider extends ChangeNotifier {
         .child("${myTimeStamp.microsecondsSinceEpoch}")
         .set({
       'Body': body,
-      'Time': myTimeStamp0.microsecondsSinceEpoch,
+      'Time': myTimeStamp.microsecondsSinceEpoch,
       'to':'$toNumber',
       'isMe': true
     }).whenComplete(() {
@@ -47,7 +47,7 @@ class ChatProvider extends ChangeNotifier {
           .child("${myTimeStamp.microsecondsSinceEpoch}")
           .set({
         'Body': body,
-        'Time': myTimeStamp0.microsecondsSinceEpoch,
+        'Time': myTimeStamp.microsecondsSinceEpoch,
         'to':'$senderNumber',
         'isMe': false
       }).whenComplete(() {
@@ -90,6 +90,7 @@ class ChatProvider extends ChangeNotifier {
           'data': <String, dynamic>{
             'click_action': 'FLUTTER_NOTIFICATION_CLICK',
             'id': '1',
+            'sound': 'pristine.mp3',
             'status': 'done'
           },
           'to': "$number"//"e9JKkgGjRXqqRV_1yu-SEt:APA91bExE7SRFbnW8cj_wzQ-9KStPXRyTpIC6QbasD7er1d0VYoltJZjrFgPQtcJFBpyb49rVd6kDOX6mrKD-wT0Z4wWKkU8pZU_IytY8YKu3vL-hkXQ4pOGmYLscNcahkWN745sImnA"//await firebaseMessaging.getToken(),

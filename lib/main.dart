@@ -21,7 +21,6 @@ Future main() async {
 
   SQLDatabase.db.initDB();
   SharedPreferences prefs = await SharedPreferences.getInstance();
-
   runApp(MultiProvider(
     providers: [
       ChangeNotifierProvider(
